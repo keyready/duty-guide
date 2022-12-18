@@ -1,0 +1,39 @@
+.TaskCard {
+    padding: 20px;
+    border: 2px solid var(--bg-color);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.text {
+    color: var(--secondary-bg-color);
+    font-weight: bold;
+}
+
+.answers {
+    color: green;
+}
+
+.badStat {
+    color: red;
+}
+
+.answerBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wrong {
+    cursor: not-allowed;
+    background: indianred;
+    outline: darkred 2px solid;
+}
+
+.right {
+    cursor: not-allowed;
+    background: lightgreen;
+    outline: forestgreen 2px solid;
+}
