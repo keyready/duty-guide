@@ -1,0 +1,21 @@
+.MainPage {
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    margin-left: auto;
+}
+
+.content_text {
+    margin: 10px 0;
+    text-align: justify;
+    text-indent: 10px;
+}
+
+.content_text_wrapper {
+    ul {
+        margin: 0 30px;
+    }
+}
