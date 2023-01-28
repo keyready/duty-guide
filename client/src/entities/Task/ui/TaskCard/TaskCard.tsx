@@ -2,8 +2,8 @@ import { classNames, Mods } from 'shared/lib/classNames/classNames';
 import { memo, useCallback, useState } from 'react';
 import { Input, InputSize } from 'shared/UI/Input/Input';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
+import { Category } from 'features/fetchCategories';
 import classes from './TaskCard.module.scss';
-import { Categories } from '../../model/types/task';
 
 interface TaskCardProps {
     id: number;
@@ -12,7 +12,7 @@ interface TaskCardProps {
     description: string;
     type: 'text' | 'test';
     theoryId: number;
-    categories: Categories[]
+    categories: Category[]
     rightAnswer: string;
     totalAnswersAmount: number;
     rightAnswers: number;
@@ -91,6 +91,28 @@ export const TaskCard = memo((props: TaskCardProps) => {
                         >
                             Сохранить
                         </Button>
+                    </div>
+                    <div>
+                        <div
+                            className={classes.text}
+                            style={{ display: 'inline-block' }}
+                        >
+                            Ответили на вопрос:
+                            {' '}
+                            <p style={{ display: 'inline-block' }}>{totalAnswersAmount}</p>
+                        </div>
+                        <div
+                            className={classes.text}
+                        >
+                            Из них правильно:
+                            {' '}
+                            <p
+                                className={classNames(classes.answers, mods, [])}
+                                style={{ display: 'inline-block' }}
+                            >
+                                {rightAnswers}
+                            </p>
+                        </div>
                     </div>
                 </form>
             </div>

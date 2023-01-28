@@ -1,8 +1,4 @@
-export type Categories =
-    'Боевая готовность'
-    | 'Противодействие терроризму'
-    | 'Пожарная безопасность'
-    | 'Знание устава'
+import { Category } from 'features/fetchCategories';
 
 export interface Task {
     id: number;
@@ -10,7 +6,7 @@ export interface Task {
     description: string;
     type: 'text' | 'test';
     theoryId: number;
-    categories: Categories[]
+    categories: Category[]
     rightAnswer: string;
     answers?: string[];
     totalAnswersAmount: number;

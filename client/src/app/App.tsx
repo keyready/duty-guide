@@ -6,6 +6,7 @@ import { Navbar } from 'widgets/Navbar/';
 import { useDispatch } from 'react-redux';
 import { UserActions } from 'entities/User';
 import { Loader } from 'shared/UI/Loader/Loader';
+import { Router } from 'react-router-dom';
 
 export const App = () => {
     const dispatch = useDispatch();

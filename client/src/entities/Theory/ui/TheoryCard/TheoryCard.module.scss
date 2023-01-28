@@ -1,0 +1,52 @@
+.TheoryCard {
+    padding: 20px;
+    border: 3px solid var(--secondary-bg-color);
+    border-radius: 10px;
+}
+
+.theoryCard__Title {
+    color: black;
+    margin-bottom: 15px;
+}
+
+.theoryCard__content {
+    color: black;
+    text-align: justify;
+    text-indent: 20px;
+}
+
+.categories {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.category_item {
+    padding: 2px 8px;
+    border-radius: 5px;
+    color: var(--inverted-bg-color);
+    background: var(--secondary-bg-color);
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.filesTitle {
+    margin: 10px 0;
+}
+
+.file:link,
+.file:visited {
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: black;
+    background: var(--secondary-bg-color);
+    text-decoration: none;
+}
+
+.filesWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+}

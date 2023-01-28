@@ -1,18 +1,13 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { memo, useCallback } from 'react';
 import { ContentWrapper } from 'widgets/ContentWrapper/ContentWrapper';
-import { Input } from 'shared/UI/Input/Input';
-import { Button, ButtonTheme } from 'shared/UI/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    getError,
-    getIsLoading,
-    getLogin,
-    getPassword,
-    authByUsername,
-    loginActions,
+    authByUsername, getError, getIsLoading, getLogin, getPassword, loginActions,
 } from 'features/loginByUsername';
 import { useNavigate } from 'react-router-dom';
+import { Button, ButtonTheme } from 'shared/UI/Button/Button';
+import { Input } from 'shared/UI/Input/Input';
 import classes from './LoginPage.module.scss';
 
 interface LoginPageProps {

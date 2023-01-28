@@ -32,6 +32,7 @@ export const Input = memo((props: InputProps) => {
         placeholder,
         size = InputSize.BIG,
         disabled,
+        ...otherProps
     } = props;
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +52,7 @@ export const Input = memo((props: InputProps) => {
             onChange={onChangeHandler}
             placeholder={placeholder}
             disabled={disabled}
+            {...otherProps}
         />
     );
 });

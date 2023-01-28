@@ -1,10 +1,12 @@
 import { configureStore, ReducersMapObject } from '@reduxjs/toolkit';
 import { CounterReducer } from 'entities/Counter';
 import { loginReducer } from 'features/loginByUsername';
-import { UserReducer, UserSchema } from 'entities/User';
+import { UserReducer } from 'entities/User';
 import { NavigateOptions, To } from 'react-router-dom';
 import { $api } from 'shared/api/api';
 import { TaskReducer } from 'entities/Task';
+import { TheoryReducer } from 'entities/Theory';
+import { fetchCategoriesReducer } from 'features/fetchCategories';
 import { StateSchema } from './StateSchema';
 
 export function createReduxStore(
@@ -16,6 +18,8 @@ export function createReduxStore(
         user: UserReducer,
         loginByUsername: loginReducer,
         Task: TaskReducer,
+        Theory: TheoryReducer,
+        categories: fetchCategoriesReducer,
     };
 
     return configureStore({

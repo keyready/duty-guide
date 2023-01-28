@@ -4,3 +4,10 @@
     gap: 20px;
     grid-template-columns: 1fr 1fr;
 }
+
+@media (width <= 1100px) {
+    .TaskDetails {
+        grid-template-columns: 1fr;
+    }
+}
+

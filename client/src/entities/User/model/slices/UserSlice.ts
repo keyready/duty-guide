@@ -21,6 +21,7 @@ export const UserSlice = createSlice({
         logout: (state) => {
             localStorage.removeItem(USER_LOCALSTORAGE_KEY);
             state.authData = undefined;
+            location.reload();
         },
     },
 });

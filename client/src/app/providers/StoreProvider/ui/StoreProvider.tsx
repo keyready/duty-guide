@@ -19,6 +19,7 @@ export const StoreProvider = memo((props: StoreProviderProps) => {
     const store = createReduxStore(initialState, navigate);
 
     return (
+        // @ts-ignore
         <Provider store={store}>
             {children}
         </Provider>

@@ -32,6 +32,9 @@ export const Navbar = memo((props: NavbarProps) => {
                     <AppLink className={classes.main_link} to="/">Главная</AppLink>
                     <AppLink className={classes.main_link} to="/theory">Теория</AppLink>
                     <AppLink to="/testing">Тестирование</AppLink>
+                    {authData.role === 'admin'
+                        ? (<AppLink className={classes.admin_link} to="/adminka">Админка</AppLink>)
+                        : ''}
                 </div>
                 <Button
                     onClick={onLogout}

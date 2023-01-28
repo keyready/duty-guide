@@ -1,5 +1,4 @@
 import { classNames, Mods } from 'shared/lib/classNames/classNames';
-import { useTranslation } from 'react-i18next';
 import { ButtonHTMLAttributes, memo, ReactNode } from 'react';
 import classes from './Button.module.scss';
 
@@ -14,24 +13,25 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
     onClick?: () => void;
     theme?: ButtonTheme;
+    type?: 'submit' | 'button' | 'reset'
 }
 
 export const Button = memo((props: ButtonProps) => {
-    const { t } = useTranslation();
-
     const {
         className,
         children,
         onClick,
         theme = ButtonTheme.PRIMARY,
         disabled,
+        type = 'button',
     } = props;
 
     const mods: Mods = { [classes.disabled]: disabled };
 
+    /* eslint-disable react/button-has-type */
     return (
-        // eslint-disable-next-line react/button-has-type
         <button
+            type={type}
             disabled={disabled}
             onClick={onClick}
             className={classNames(classes.Button, mods, [className, classes[theme]])}

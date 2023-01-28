@@ -1,5 +1,4 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import { useTranslation } from 'react-i18next';
 import { memo, ReactNode } from 'react';
 import classes from './ContentWrapper.module.scss';
 
@@ -10,8 +9,6 @@ interface ContentWrapperProps {
 }
 
 export const ContentWrapper = memo((props: ContentWrapperProps) => {
-    const { t } = useTranslation();
-
     const {
         className,
         children,

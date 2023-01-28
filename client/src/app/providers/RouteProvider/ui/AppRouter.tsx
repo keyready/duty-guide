@@ -12,6 +12,9 @@ const AppRouter = () => {
         if (route.authOnly && !isAuth) {
             return false;
         }
+        if (route.adminOnly && isAuth?.role !== 'admin') {
+            return false;
+        }
         return true;
     }), [isAuth]);
 
