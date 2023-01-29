@@ -1,4 +1,4 @@
-const {UserModel,TheoryModel, TaskModel, CategoryModel,FileNameModel,CategoryTheoryModel} = require('../models')
+const {UserModel,TheoryModel, TaskModel, CategoryModel,FileNameModel,CategoryTheoryModel, SolveModel, CategoryTaskModel} = require('../models')
 const {Op} = require('sequelize');
 
 class UserService {
@@ -46,6 +46,19 @@ class UserService {
 
     async showAllTasks(){
         const tasks = await TaskModel.findAll({raw:true})
+        tasks.forEach(task =>{            
+            /*ВЕРНЫЙ ОТВЕТ*/
+            task.rightAnswer = SolveModel.findOne({where:{taskId:task.id}})
+            /**/
+
+            /*НЕВЕРНЫЕ ОТВЕТЫ*/
+            task.questions = SolveModel.findAll({where:{id:{[Op.in]:Array.from({length: 4}, () => Math.floor(Math.random() * 4))}}})
+            /**/
+        })
+
+        const CategoryId = CategoryTaskModel.findAll({where:{taskId:task.id}})
+
+        //категории (имя), варианты ответов - массив и верный ответ
         return tasks
     }
 

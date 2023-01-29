@@ -6,7 +6,7 @@ const CategoryModel = require('./category.model');
 const SolveModel = require('./solve.model');
 
 const CategoryTheoryModel = require('./category-theory');
-
+const CategoryTaskModel = require('./category-task.model');
 //TODO
 //1 теория - много категории
 //1 теории - много файлов
@@ -15,7 +15,10 @@ TheoryModel.hasMany(TaskModel);
 TheoryModel.hasMany(FileNameModel);
 CategoryModel.belongsToMany(TheoryModel,{through:CategoryTheoryModel});
 TheoryModel.belongsToMany(CategoryModel,{through:CategoryTheoryModel})
-CategoryModel.hasMany(TaskModel);
+
+CategoryModel.belongsToMany(TaskModel,{through:CategoryTaskModel});
+TaskModel.belongsToMany(CategoryModel,{through:CategoryTaskModel});
+
 TaskModel.hasOne(SolveModel);
 
 module.exports = {
@@ -25,5 +28,6 @@ module.exports = {
     FileNameModel,
     CategoryModel,
     SolveModel,
-    CategoryTheoryModel
+    CategoryTheoryModel,
+    CategoryTaskModel
 }
