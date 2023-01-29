@@ -48,17 +48,27 @@ class UserService {
         const tasks = await TaskModel.findAll({raw:true})
         tasks.forEach(task =>{            
             /*ВЕРНЫЙ ОТВЕТ*/
-            task.rightAnswer = SolveModel.findOne({where:{taskId:task.id}})
+            task.rightAnswer = SolveModel.findOne({where:{taskId:task.id},attributes:['value']})
             /**/
-
             /*НЕВЕРНЫЕ ОТВЕТЫ*/
-            task.questions = SolveModel.findAll({where:{id:{[Op.in]:Array.from({length: 4}, () => Math.floor(Math.random() * 4))}}})
+            task.questions = SolveModel.findAll({where:{id:{[Op.in]:Array.from({length: 4}, () => Math.floor(Math.random() * 4))},attribute:['value']}})
+            /**/
+            
+            let CategoryIdArrayObjects = CategoryTaskModel.findAll({where:{taskId:task.id},attributes:['categoryId']})
+            let CategoryIdArray = []
+            for (let i = 0; i < CategoryIdArrayObjects.length;i++){
+                CategoryIdArray.push(CategoryIdArrayObjects[i].id)
+            }
+            const categoryArrayNameObjects = CategoryModel.findAll({where:{id:{[Op.in]:CategoryIdArray},attribute:['name']}})
+            let categoryArrayName = []
+            for (let i = 0; i < categoryArrayNameObjects.length;i++){
+                categoryArrayName.push(categoryArrayNameObjects[i].name)
+            }
+            /*Категории массив*/
+            task.categories = categoryArrayName
             /**/
         })
 
-        const CategoryId = CategoryTaskModel.findAll({where:{taskId:task.id}})
-
-        //категории (имя), варианты ответов - массив и верный ответ
         return tasks
     }
 

@@ -12,7 +12,7 @@ class AdminService {
         return true
     }
 
-    async createTask(description, questions, title, categories) {
+    async createTask(description, questions, title, categories,solve) {
         const foundCategory = await CategoryModel.findAll(
             {
                 where: {
@@ -22,9 +22,15 @@ class AdminService {
                 }
             })
 
+            
         const task = await TaskModel.create({
             title,
             description
+        })
+        
+        await SolveModel.create({
+            value:solve,
+            taskId:task.id
         })
 
         for (let i = 0; i < foundCategory.length;i++){
