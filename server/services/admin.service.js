@@ -1,18 +1,23 @@
 const {CategoryModel,SolveModel,TaskModel, TheoryModel,FileNameModel} = require('../models');
 
+const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
+const fs = require("fs");
+const path = require("path");
+const {Op} = require('sequelize');
+const crypto = require('crypto')
+
 class AdminService {
 
-    async createCategory(name,theory){
-        const theory = await TheoryModel.findOne({where:{theory}})
-        const candidate = await CategoryModel.findOne({where:{name}})
-        if (candidate){
+    async createCategory(name, theory) {
+        const candidate = await CategoryModel.findOne({where: {name}})
+        if (candidate) {
             return false
-        }        
-        await CategoryModel.create({name,theoryId:theory.id})
+        }
+        await CategoryModel.create({name})
         return true
     }
 
-    async createTask(description, questions, title, categories,solve) {
+    async createTask(description, questions, title, categories) {
         const foundCategory = await CategoryModel.findAll(
             {
                 where: {
@@ -22,15 +27,9 @@ class AdminService {
                 }
             })
 
-            
         const task = await TaskModel.create({
             title,
             description
-        })
-        
-        await SolveModel.create({
-            value:solve,
-            taskId:task.id
         })
 
         for (let i = 0; i < foundCategory.length;i++){
@@ -77,7 +76,6 @@ class AdminService {
     }
 
 
-    
 }
 
 module.exports = new AdminService();
