@@ -1,7 +1,7 @@
-const AdminService = require('../services/admin.service');
+const AdminControllers = require('../controllers/admin.controllers')
 
-module.exports = (app) =>{
-    app.post('/admin/createTask',AdminService.createTask)
-    app.post('/admin/createCategory',AdminService.createCategory)
-    app.post('/admin/createTheory',AdminService.createTheory)
+module.exports = (app) => {
+    app.post('/admin/createTask', AdminControllers.createTask)
+    app.post('/admin/createCategory', AdminControllers.createCategory)
+    app.post('/admin/createTheory', AdminControllers.createTheory)
 }

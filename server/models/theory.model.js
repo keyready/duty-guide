@@ -1,7 +1,7 @@
 const DB = require('../config/db.connect');
 const {DataTypes} = require('sequelize');
 
-module.exports = DB.define('categories',{
+module.exports = DB.define('theory',{
     title:{
         type:DataTypes.STRING,
         allowNull:false,
@@ -12,6 +12,6 @@ module.exports = DB.define('categories',{
         allowNull:false
     }
 },{
-    tableName:'categories',
+    tableName:'theory',
     timestamps:false
 })

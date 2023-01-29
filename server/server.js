@@ -1,6 +1,5 @@
 const express = require('express')
 const DB = require('./config/db.connect');
-const AppRoutes = require('./routes')
 const fileupload = require('express-fileupload')
 const cors = require('cors')
 const path = require('path')
@@ -18,6 +17,7 @@ require('./routes/admin.routes')(app);
 const StartApp = async () =>{
     try{
         await DB.sync()
+        // await DB.sync({force: true})
         await app.get('/*',(req,res) =>{
             return res.sendFile(path.resolve('../client/public/index.html'))
         })

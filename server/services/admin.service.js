@@ -1,69 +1,74 @@
-const {CategoryModel,SolveModel,TaskModel, TheoryModel,FileNameModel} = require('../models');
+const {CategoryModel, SolveModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel} = require('../models');
+const fs = require("fs");
+const path = require("path");
 
 class AdminService {
 
-    async createCategory(name,theory){
-        const theory = await TheoryModel.findOne({where:{theory}})
-        const candidate = await CategoryModel.findOne({where:{name}})
-        if (candidate){
+    async createCategory(name, theory) {
+        const foundTheory = await TheoryModel.findOne({where: {theory}})
+        const candidate = await CategoryModel.findOne({where: {name}})
+        if (candidate) {
             return false
-        }        
-        await CategoryModel.create({name,theoryId:theory.id})
+        }
+        await CategoryModel.create({name, theoryId: foundTheory.id})
         return true
     }
 
-    async createTask(name,description,solve,category,theory){
-        const category = await CategoryModel.findOne({where:{category}})
-        const theory = await TheoryModel.findOne({where:{theory}})
-        
+    async createTask(name, description, solve, category, theory) {
+        const foundCategory = await CategoryModel.findOne({where: {category}})
+        const foundTheory = await TheoryModel.findOne({where: {theory}})
+
         const task = await TaskModel.create({
             name,
             description,
-            categoryId:category.id,
-            theoryId:theory.id
+            categoryId: foundCategory.id,
+            theoryId: foundTheory.id
         })
-        
+
         await SolveModel.create({
             solve,
-            taskId:task.id
+            taskId: task.id
         })
-        
+
         return true
     }
 
-    async createTheory(title,content,filesList){
+    async createTheory(title, content, filesList, categories) {
         const uploadedFilesPath = '../client/public/files';
-        try {
-            fs.mkdir(`${uploadedFilesPath}/${title}`, () => {})
+        fs.mkdir(`${uploadedFilesPath}/${title}`, () => {
+        })
 
-            filesList.files.forEach(file => {
-                const dot = file.name.lastIndexOf('.');
+        for (let i = 0; i < filesList.length; i++) {
+            const dot = filesList[i].name.lastIndexOf('.');
 
-                const newFileName = crypto.randomBytes(5).toString('hex') + file.name.substr(dot)
+            const newFileName = crypto.randomBytes(5).toString('hex') + filesList[i].name.substr(dot)
 
-                const realFileName = file.name
+            const realFileName = filesList[i].name
 
-                file.mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
+            await FileNameModel.create({
+                name: realFileName,
+                gename: newFileName
             })
-            }
-        catch(e){
-            console.log(e.message);
-        }
 
-        await TheoryModel.create({
+            filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
+        }
+        const theory = await TheoryModel.create({
             title,
             content
         })
-        await FileNameModel.create({
-            name:realFileName,
-            gename:newFileName
-        })
-        
+
+        const ids = categories.split(',')
+        for (let i = 0; i < ids.length; i++) {
+            await CategoryTheoryModel.create({
+                theoryId: theory.id,
+                categoryId: ids[i]
+            })
+        }
+
         return true
     }
 
 
-    
 }
 
 module.exports = new AdminService();
