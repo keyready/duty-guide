@@ -24,16 +24,6 @@ class UserControllers {
         }
     }
 
-    async showAllCategory(req,res){
-        try{
-            const categories = await UserService.showAllCategories()
-            return res.status(200).json(categories)
-        }
-        catch(e){
-            console.log(e.message);
-            return res.status(500).json(e.message)
-        }
-    }
 
 }
 

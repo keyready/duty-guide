@@ -4,12 +4,13 @@ const {Op} = require('sequelize');
 class UserService {
 
     async showAllTheory(){
-        //имена категорий.
+        // Теория
         const theoryObjects = await TheoryModel.findAll({raw:true})
 
+        //Возвращение всех файлов в соответствие каждому объекту теории.
         theoryObjects.forEach(th =>{
             th.files = FileNameModel.findAll({where:{theoryId:th.id}})
-        }) //Возвращение всех файлов в соответствие каждому объекту теории.
+        }) 
 
         let ArrayIdFromOneTheory=[]
         for (let i = 0; i < theoryObjects.length; i++){
@@ -33,11 +34,11 @@ class UserService {
                             [Op.in]:ArrayIdFromOneTheory
                         }
                     },
-                    attributes:['name']
+                    attributes:['title']
                 })
             let categoriesNameArrayFromOneTheory = []
             for(let k = 0; k < categoriesNameObjectsFromOneTheory.length;k++){
-                categoriesNameArrayFromOneTheory.push(categoriesNameObjectsFromOneTheory[i].name)
+                categoriesNameArrayFromOneTheory.push(categoriesNameObjectsFromOneTheory[i].title)
             }
             theoryObjects[i].categories = categoriesNameArrayFromOneTheory
         }
@@ -46,35 +47,28 @@ class UserService {
 
     async showAllTasks(){
         const tasks = await TaskModel.findAll({raw:true})
-        tasks.forEach(task =>{            
-            /*ВЕРНЫЙ ОТВЕТ*/
-            task.rightAnswer = SolveModel.findOne({where:{taskId:task.id},attributes:['value']})
-            /**/
-            /*НЕВЕРНЫЕ ОТВЕТЫ*/
-            task.questions = SolveModel.findAll({where:{id:{[Op.in]:Array.from({length: 4}, () => Math.floor(Math.random() * 4))},attribute:['value']}})
-            /**/
-            
-            let CategoryIdArrayObjects = CategoryTaskModel.findAll({where:{taskId:task.id},attributes:['categoryId']})
-            let CategoryIdArray = []
-            for (let i = 0; i < CategoryIdArrayObjects.length;i++){
-                CategoryIdArray.push(CategoryIdArrayObjects[i].id)
-            }
-            const categoryArrayNameObjects = CategoryModel.findAll({where:{id:{[Op.in]:CategoryIdArray},attribute:['name']}})
-            let categoryArrayName = []
-            for (let i = 0; i < categoryArrayNameObjects.length;i++){
-                categoryArrayName.push(categoryArrayNameObjects[i].name)
-            }
-            /*Категории массив*/
-            task.categories = categoryArrayName
-            /**/
+        tasks.forEach(task =>{
+            const categoriesArrayObjectsId = CategoryTaskModel.findAll(
+                {
+                    where:{
+                        taskId:task.id
+                    },
+                    attributes:['categoryId']
+                }
+            )
+            let categoriesArrayId = []
+            categoriesArrayObjectsId.map(oneOjb =>{
+                categoriesArrayId.push(oneOjb.categoryId)
+            })
+            task.categories = CategoryModel.findAll({
+                where:{
+                    id:{
+                        [Op.in]:categoriesArrayId
+                    }
+                }
+            })
         })
-
-        return tasks
-    }
-
-    async showAllCategories(){
-        const categories = await CategoryModel.findAll({raw:true})
-        return categories
+        return tasks   
     }
 
 }

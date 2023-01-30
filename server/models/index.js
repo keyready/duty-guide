@@ -3,23 +3,24 @@ const TaskModel = require('./task.model');
 const TheoryModel = require('./theory.model');
 const FileNameModel = require('./fileName.model');
 const CategoryModel = require('./category.model');
-const SolveModel = require('./solve.model');
-
 const CategoryTheoryModel = require('./category-theory');
 const CategoryTaskModel = require('./category-task.model');
-//TODO
-//1 теория - много категории
-//1 теории - много файлов
 
-TheoryModel.hasMany(TaskModel);
+
+/*
+    Категория - дневальный по курсу, дежурный по курсу, пожарный патруль. 
+    Теория - устав, стенды, методички 
+    Задача.
+*/
+
 TheoryModel.hasMany(FileNameModel);
+
 CategoryModel.belongsToMany(TheoryModel,{through:CategoryTheoryModel});
 TheoryModel.belongsToMany(CategoryModel,{through:CategoryTheoryModel})
 
 CategoryModel.belongsToMany(TaskModel,{through:CategoryTaskModel});
 TaskModel.belongsToMany(CategoryModel,{through:CategoryTaskModel});
 
-TaskModel.hasOne(SolveModel);
 
 module.exports = {
     UserModel,
@@ -27,7 +28,6 @@ module.exports = {
     TheoryModel,
     FileNameModel,
     CategoryModel,
-    SolveModel,
     CategoryTheoryModel,
     CategoryTaskModel
 }

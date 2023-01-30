@@ -8,43 +8,55 @@ const crypto = require('crypto')
 
 class AdminService {
 
-    async createCategory(name, theory) {
-        const candidate = await CategoryModel.findOne({where: {name}})
-        if (candidate) {
-            return false
-        }
-        await CategoryModel.create({name})
+    async createCategory(categoryTitle, theory) {
+        const theory = await TheoryModel.findOne({where:{title:theory}});
+        const category = await CategoryModel.create({
+            title:categoryTitle            
+        })
+        await CategoryTheoryModel.create({
+            categoryId:category.id,
+            theoryId:theory.id
+        })
         return true
     }
 
-    async createTask(description, questions, title, categories) {
-        const foundCategory = await CategoryModel.findAll(
-            {
-                where: {
-                    id:{
-                        [Op.in]:categories
-                    }
-                }
-            })
-
+    async createTask(title, description, right_answer, question1, question2, question3, theory) {
         const task = await TaskModel.create({
             title,
-            description
+            description,
+            right_awswer,
+            question1,
+            question2,
+            question3
         })
 
-        for (let i = 0; i < foundCategory.length;i++){
+        for (let i = 0; i < theory.length; i++){
             await CategoryTaskModel.create({
                 taskId:task.id,
-                categoryId:foundCategory[i].id
+                theoryId:theory[i]
+                //theoryId:theory[i].id
+                //TODO ---Получаю массив id теории?---
             })
         }
-
         return true
     }
 
     async createTheory(title, content, filesList, categories) {
+        
+        const theory = await TheoryModel.create({
+            title,
+            content
+        })
+        
+        //TODO ---Путь до диры в dev?---
         const uploadedFilesPath = '../client/public/files';
-        fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {})
+        
+        fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
+            if(err){
+                console.log(err.message);
+            }
+            console.log(`Папочка ${title} успешно создана.`);
+        })
 
         for (let i = 0; i < filesList.length; i++) {
             const dot = filesList[i].name.lastIndexOf('.');
@@ -54,25 +66,27 @@ class AdminService {
             filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
 
             await FileNameModel.create({
-                name: realFileName, // удалить его
-                gename: newFileName
+                name: newFileName,
+                theoryId:theory.id 
             })
 
         }
-        const theory = await TheoryModel.create({
-            title,
-            content
-        })
 
-        const ids = categories.split(',')
-        for (let i = 0; i < ids.length; i++) {
+        //TODO ---Массив или строка?---
+        const idsArray = categories.split(',')
+        for (let i = 0; i < idsArray.length; i++) {
             await CategoryTheoryModel.create({
                 theoryId: theory.id,
-                categoryId: ids[i]
+                categoryId: idsArray[i]
             })
         }
 
         return true
+    }
+
+    async showAllCategories(){
+        const categories = await CategoryModel.findAll({raw:true})
+        return categories
     }
 
 

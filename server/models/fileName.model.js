@@ -6,10 +6,6 @@ module.exports = DB.define('filenames',{
         type:DataTypes.STRING,
         allowNull:false,
     },
-    gename:{
-        type:DataTypes.STRING,
-        allowNull:false
-    }
 },{
     tableName:'filenames',
     timestamps:false
