@@ -8,15 +8,27 @@ const crypto = require('crypto')
 
 class AdminService {
 
-    async createCategory(categoryTitle, theory) {
-        const theory = await TheoryModel.findOne({where:{title:theory}});
+    async createCategory(categoryTitle, theoryNameArray) {
+        const theoryNameArray = theoryNameArray.split(',')
+        const theory = await TheoryModel.findAll({
+            where:
+            {
+                title:{
+                    [Op.in]:theoryNameArray
+                }
+            }
+        });
+
         const category = await CategoryModel.create({
             title:categoryTitle            
         })
-        await CategoryTheoryModel.create({
-            categoryId:category.id,
-            theoryId:theory.id
-        })
+
+        for(let i = 0; theory.length;i++){
+            await CategoryTheoryModel.create({
+                categoryId:category.id,
+                theoryId:theory[i].id
+            })
+        }
         return true
     }
 
@@ -34,7 +46,6 @@ class AdminService {
             await CategoryTaskModel.create({
                 taskId:task.id,
                 theoryId:theory[i]
-                //theoryId:theory[i].id
                 //TODO ---Получаю массив id теории?---
             })
         }
@@ -48,7 +59,7 @@ class AdminService {
             content
         })
         
-        //TODO ---Путь до диры в dev?---
+        //TODO ---Путь до диры со статикой в dev.---
         const uploadedFilesPath = '../client/public/files';
         
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
@@ -88,7 +99,6 @@ class AdminService {
         const categories = await CategoryModel.findAll({raw:true})
         return categories
     }
-
 
 }
 

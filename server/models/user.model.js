@@ -14,19 +14,10 @@ module.exports = DB.define('users', {
         type:DataTypes.STRING,
         allowNull:false
     },
-    password:{
-        type:DataTypes.STRING,
-        allowNull:false
-    },
     role:{
         type:DataTypes.STRING,
         allowNull:false,
         defaultValue:'user'
-    },
-    quantity_solve:{
-        type:DataTypes.INTEGER,
-        defaultValue:0,
-        allowNull:false
     }
 },{
     tableName:'users',

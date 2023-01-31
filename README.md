@@ -75,4 +75,3 @@ Web-application for learning cadets' duties and testing them. Project is maintai
 <i>/admin/dutiesSchedule/duty/<b>:id</b></i> – страница просмотра результатов подготовки отдельного взятого наряда (get)
 
 <i>/attendant/setDuty</i> – запрос на добавление заступающего наряда (post)  
-
