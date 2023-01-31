@@ -2,6 +2,17 @@ const UserService = require('../services/user.service');
 
 class UserControllers {
 
+    async startApp(req,res){
+        try{
+            const users = UserService.startApp()
+            return res.status(200).json(users)
+        }
+        catch(e){
+            console.log(e.message);
+            return res.status(500).json(e.message)
+        }
+    }
+
     async login(req,res){
         try{
             const {firstname,middlename,lastname} = req.body;

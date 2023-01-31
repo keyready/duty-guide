@@ -2,6 +2,7 @@ const UserControllers = require('../controllers/user.controllers');
 const {checkAuth} = require('../middleware/auth');
 
 module.exports = (app) => {
+    app.get('/',UserControllers.startApp)
     app.get('/tasks',[checkAuth],UserControllers.showAllTasks)
     app.get('/theory',[checkAuth],UserControllers.showAllTheory)
     app.post('/login',UserControllers.login)

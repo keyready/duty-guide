@@ -3,6 +3,11 @@ const {Op} = require('sequelize');
 
 class UserService {
 
+    async startApp(){
+        const users = await UserModel.findAll({raw:true});
+        return users
+    }
+
     async showAllTheory(){
         // Теория
         const theoryObjects = await TheoryModel.findAll({raw:true})
