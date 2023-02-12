@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { User, UserActions } from 'entities/User';
 import { ThunkConfig } from 'app/providers/StoreProvider/config/StateSchema';
 import { Category } from 'features/fetchCategories/model/types/CategoriesSchema';
 import { fetchCategoriesActions } from 'features/fetchCategories';

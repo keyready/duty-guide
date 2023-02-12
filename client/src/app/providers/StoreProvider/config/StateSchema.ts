@@ -6,6 +6,7 @@ import { NavigateOptions, To } from 'react-router-dom';
 import { TaskSchema } from 'entities/Task/';
 import { TheorySchema } from 'entities/Theory';
 import { CategoriesSchema } from 'features/fetchCategories';
+import { UserForLoginSchema } from 'pages/LoginPage/model/types/users';
 
 export interface StateSchema {
     counter: CounterSchema;
@@ -13,13 +14,13 @@ export interface StateSchema {
     loginByUsername: loginSchema;
     Task: TaskSchema;
     Theory: TheorySchema
-
+    UserForLogin: UserForLoginSchema;
     categories: CategoriesSchema;
 }
 
 export interface ThunkExtraArg {
     api: AxiosInstance;
-    navigate?: (to: To, options?: NavigateOptions) => void;
+    navigate: (to: To, options?: NavigateOptions) => void;
 }
 
 export interface ThunkConfig<T> {

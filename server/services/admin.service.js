@@ -1,6 +1,11 @@
-const {CategoryModel,SolveModel,TaskModel, TheoryModel,FileNameModel} = require('../models');
-
-const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
+const {
+    CategoryModel,
+    TaskModel,
+    TheoryModel,
+    FileNameModel,
+    CategoryTheoryModel,
+    CategoryTaskModel
+} = require('../models');
 const fs = require("fs");
 const path = require("path");
 const {Op} = require('sequelize');
@@ -9,24 +14,24 @@ const crypto = require('crypto')
 class AdminService {
 
     async createCategory(categoryTitle, theoryNameArray) {
-        const theoryNameArray = theoryNameArray.split(',')
+        const theoryNameArrayNew = theoryNameArray.split(',')
         const theory = await TheoryModel.findAll({
             where:
-            {
-                title:{
-                    [Op.in]:theoryNameArray
+                {
+                    title: {
+                        [Op.in]: theoryNameArrayNew
+                    }
                 }
-            }
         });
 
         const category = await CategoryModel.create({
-            title:categoryTitle            
+            title: categoryTitle
         })
 
-        for(let i = 0; theory.length;i++){
+        for (let i = 0; theory.length; i++) {
             await CategoryTheoryModel.create({
-                categoryId:category.id,
-                theoryId:theory[i].id
+                categoryId: category.id,
+                theoryId: theory[i].id
             })
         }
         return true
@@ -42,10 +47,10 @@ class AdminService {
             question3
         })
 
-        for (let i = 0; i < theory.length; i++){
+        for (let i = 0; i < theory.length; i++) {
             await CategoryTaskModel.create({
-                taskId:task.id,
-                theoryId:theory[i]
+                taskId: task.id,
+                theoryId: theory[i]
                 //TODO ---Получаю массив id теории?---
             })
         }
@@ -53,17 +58,17 @@ class AdminService {
     }
 
     async createTheory(title, content, filesList, categories) {
-        
+
         const theory = await TheoryModel.create({
             title,
             content
         })
-        
+
         //TODO ---Путь до диры со статикой в dev.---
         const uploadedFilesPath = '../client/public/files';
-        
+
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
-            if(err){
+            if (err) {
                 console.log(err.message);
             }
             console.log(`Папочка ${title} успешно создана.`);
@@ -78,7 +83,7 @@ class AdminService {
 
             await FileNameModel.create({
                 name: newFileName,
-                theoryId:theory.id 
+                theoryId: theory.id
             })
 
         }
@@ -95,8 +100,8 @@ class AdminService {
         return true
     }
 
-    async showAllCategories(){
-        const categories = await CategoryModel.findAll({raw:true})
+    async showAllCategories() {
+        const categories = await CategoryModel.findAll({raw: true})
         return categories
     }
 

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from 'entities/User';
 import { useNavigate } from 'react-router-dom';
 import { fetchCategories, getCategoriesData, getCategoriesIsLoading } from 'features/fetchCategories';
+import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
 import classes from './MainPage.module.scss';
 
 interface MainPageProps {
@@ -18,7 +19,7 @@ const MainPage = memo((props: MainPageProps) => {
         className,
     } = props;
 
-    const authData = useSelector(getAuthData);
+    const authData = useSelector(getAuthUser);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const categories = useSelector(getCategoriesData);

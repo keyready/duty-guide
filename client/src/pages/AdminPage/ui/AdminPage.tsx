@@ -73,8 +73,6 @@ const AdminPage = memo((props: AdminPageProps) => {
         const formData = new FormData(e.currentTarget);
         formData.append('categories', filteredIds.join(','));
 
-        console.warn(formData);
-
         dispatch(createTheory(formData));
     });
 

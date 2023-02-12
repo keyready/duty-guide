@@ -12,7 +12,7 @@ class AdminControllers {
             return res.status(500).json(e.message)
         }
     }
-    
+
     async createTask(req, res) {
         try {
             const {title, description, right_answer, question1, question2, question3, theory} = req.body;
@@ -35,12 +35,11 @@ class AdminControllers {
         }
     }
 
-    async showAllCategories(req,res){
-        try{
+    async showAllCategories(req, res) {
+        try {
             const categories = await AdminService.showAllCategories()
             return res.status(200).json(categories)
-        }
-        catch(e){
+        } catch (e) {
             console.log(e.message);
             return res.status(500).json(e.message)
         }
