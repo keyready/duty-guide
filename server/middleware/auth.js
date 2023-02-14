@@ -1,5 +1,5 @@
-exports.checkAuth = (req,res,next){
-    if(req.session.authorization){
+exports.checkAuth = (req,res,next) => {
+    if(req.session.authorization == true){
         next();
     }
     else{

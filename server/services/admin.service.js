@@ -1,5 +1,3 @@
-const {CategoryModel,SolveModel,TaskModel, TheoryModel,FileNameModel} = require('../models');
-
 const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
 const fs = require("fs");
 const path = require("path");
@@ -9,7 +7,7 @@ const crypto = require('crypto')
 class AdminService {
 
     async createCategory(categoryTitle, theoryNameArray) {
-        const theoryNameArray = theoryNameArray.split(',')
+        theoryNameArray = theoryNameArray.split(',')
         const theory = await TheoryModel.findAll({
             where:
             {
