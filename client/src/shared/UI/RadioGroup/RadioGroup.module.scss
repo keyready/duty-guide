@@ -1,0 +1,46 @@
+.RadioWrapper {
+    margin: 0 auto;
+
+    // background: green;
+}
+
+.RadioGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 7px;
+}
+
+.svg {
+    width: 35px;
+    height: 35px;
+    fill: var(--inverted-bg-color);
+}
+
+.label {
+    display: none;
+}
+
+.option {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: var(--inverted-bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 200ms;
+    outline: 2px solid var(--secondary-bg-color);
+}
+
+.checked {
+    color: var(--inverted-bg-color);
+    background: var(--secondary-bg-color);
+    transform: scale(0.98);
+}
+
+.active {
+    outline-color: var(--inverted-bg-color);
+    outline-offset: 2px;
+}

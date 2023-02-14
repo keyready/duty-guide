@@ -1,170 +1,57 @@
-import { classNames, Mods } from 'shared/lib/classNames/classNames';
-import { memo, useCallback, useState } from 'react';
-import { Input, InputSize } from 'shared/UI/Input/Input';
+import { useCallback, useState } from 'react';
+import { HRadio, HRadioType } from 'shared/UI/RadioGroup/RadioGroup';
+import { AppLink } from 'shared/UI/AppLink/AppLink';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
-import { Category } from 'features/fetchCategories';
+import { Task } from '../../model/types/Task';
 import classes from './TaskCard.module.scss';
 
 interface TaskCardProps {
-    id: number;
-    className?: string;
-    title: string;
-    description: string;
-    type: 'text' | 'test';
-    theoryId: number;
-    categories: Category[]
-    rightAnswer: string;
-    totalAnswersAmount: number;
-    rightAnswers: number;
-    answers?: string[]
+    task: Task;
+    onNextButtonClick?: () => void;
 }
 
-export const TaskCard = memo((props: TaskCardProps) => {
+export const TaskCard = (props: TaskCardProps) => {
+    const { task, onNextButtonClick } = props;
+
     const [answer, setAnswer] = useState<string>('');
-    const [isSaved, setIsSaved] = useState(false);
-    const [isRight, setIsRight] = useState(-1);
 
-    const {
-        id,
-        className,
-        categories,
-        rightAnswer,
-        rightAnswers,
-        theoryId,
-        totalAnswersAmount,
-        description,
-        type,
-        title,
-        answers,
-    } = props;
+    const radioItems: HRadioType[] = task.answersVariants.map((variant) => (
+        {
+            name: variant,
+            content: variant,
+        }
+    ));
+    const [selectedAnswer, setSelectedAnswer] = useState<HRadioType>(radioItems[0]);
 
-    // eslint-disable-next-line no-mixed-operators
-    const stat = rightAnswers / totalAnswersAmount * 100 < 70;
-
-    const answerHandler = useCallback((val) => {
-        setAnswer(val);
-    }, []);
-    const saveAnswer = useCallback(() => {
-        setIsSaved(true);
-
-        console.log(answer, '------------', rightAnswer);
-
-        if (answer === rightAnswer) {
-            setIsRight(1);
-        } else setIsRight(0);
-    }, [answer, rightAnswer]);
-    const radioHandler = useCallback((e) => {
-        setAnswer(e);
-    }, []);
-
-    const mods: Mods = {
-        [classes.badStat]: stat,
-    };
-
-    if (type === 'test') {
-        return (
-            <div className={classNames(classes.TaskCard, {}, [className])}>
-                <h2>{title}</h2>
-                <h4>{description}</h4>
-                <form onSubmit={(e) => e.preventDefault()}>
-                    {answers?.map((answer) => (
-                        <div key={answer}>
-                            <input
-                                type="radio"
-                                id={`answer${answer}`}
-                                name="answers"
-                                value={answer}
-                                onChange={(e) => radioHandler(e.target.value)}
-                                disabled={isSaved}
-                            />
-                            <label htmlFor={`answer${answer}`}>{answer}</label>
-                        </div>
-                    ))}
-                    <div>
-                        <Button
-                            theme={ButtonTheme.BLUE}
-                            onClick={saveAnswer}
-                            className={classNames('', {}, [
-                                isRight === 1 ? classes.right : '',
-                                isRight === 0 ? classes.wrong : '',
-                            ])}
-                        >
-                            Сохранить
-                        </Button>
-                    </div>
-                    <div>
-                        <div
-                            className={classes.text}
-                            style={{ display: 'inline-block' }}
-                        >
-                            Ответили на вопрос:
-                            {' '}
-                            <p style={{ display: 'inline-block' }}>{totalAnswersAmount}</p>
-                        </div>
-                        <div
-                            className={classes.text}
-                        >
-                            Из них правильно:
-                            {' '}
-                            <p
-                                className={classNames(classes.answers, mods, [])}
-                                style={{ display: 'inline-block' }}
-                            >
-                                {rightAnswers}
-                            </p>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        );
-    }
+    const continueHandler = useCallback(() => {
+        console.warn(selectedAnswer);
+    }, [selectedAnswer]);
 
     return (
-        <div className={classNames(classes.TaskCard, {}, [className])}>
-            <h2>{title}</h2>
-            <h4>{description}</h4>
-            <div>
-                <div
-                    className={classes.text}
-                    style={{ display: 'inline-block' }}
-                >
-                    Ответили на вопрос:
-                    {' '}
-                    <p style={{ display: 'inline-block' }}>{totalAnswersAmount}</p>
-                </div>
-                <div
-                    className={classes.text}
-                >
-                    Из них правильно:
-                    {' '}
-                    <p
-                        className={classNames(classes.answers, mods, [])}
-                        style={{ display: 'inline-block' }}
+        <div className={classes.TaskCard}>
+            <h2 className={classes.title}>{task.title}</h2>
+            <div className={classes.categoriesWrapper}>
+                {task.categories.map((category) => (
+                    <AppLink
+                        to="/theory"
+                        className={classes.category}
                     >
-                        {rightAnswers}
-                    </p>
-                </div>
+                        {category}
+                    </AppLink>
+                ))}
             </div>
-            <div className={classes.answerBlock}>
-                <Input
-                    size={InputSize.SMALL}
-                    placeholder="Мой ответ"
-                    value={answer}
-                    onChange={answerHandler}
-                    disabled={isSaved}
-                    className={classNames('', {}, [
-                        isRight === 1 ? classes.right : '',
-                        isRight === 0 ? classes.wrong : '',
-                    ])}
-                />
-                <Button
-                    theme={ButtonTheme.BLUE}
-                    onClick={saveAnswer}
-                    disabled={isSaved}
-                >
-                    Сохранить
-                </Button>
-            </div>
+            <p className={classes.description}>{task.description}</p>
+            <HRadio
+                items={radioItems}
+                selected={selectedAnswer}
+                setSelected={setSelectedAnswer}
+            />
+            <Button
+                theme={ButtonTheme.BLUE}
+                onClick={onNextButtonClick}
+            >
+                Далее
+            </Button>
         </div>
     );
-});
+};

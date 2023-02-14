@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
+=======
+const {
+    CategoryModel,
+    TaskModel,
+    TheoryModel,
+    FileNameModel,
+    CategoryTheoryModel,
+    CategoryTaskModel
+} = require('../models');
+>>>>>>> a4124e46bcd822a8f7d69fb7f1efe33ef1c5cc79
 const fs = require("fs");
 const path = require("path");
 const {Op} = require('sequelize');
@@ -7,43 +18,48 @@ const crypto = require('crypto')
 class AdminService {
 
     async createCategory(categoryTitle, theoryNameArray) {
+<<<<<<< HEAD
         theoryNameArray = theoryNameArray.split(',')
+=======
+        const theoryNameArrayNew = theoryNameArray.split(',')
+>>>>>>> a4124e46bcd822a8f7d69fb7f1efe33ef1c5cc79
         const theory = await TheoryModel.findAll({
             where:
-            {
-                title:{
-                    [Op.in]:theoryNameArray
+                {
+                    title: {
+                        [Op.in]: theoryNameArrayNew
+                    }
                 }
-            }
         });
 
         const category = await CategoryModel.create({
-            title:categoryTitle            
+            title: categoryTitle
         })
 
-        for(let i = 0; theory.length;i++){
+        for (let i = 0; theory.length; i++) {
             await CategoryTheoryModel.create({
-                categoryId:category.id,
-                theoryId:theory[i].id
+                categoryId: category.id,
+                theoryId: theory[i].id
             })
         }
         return true
     }
 
-    async createTask(title, description, right_answer, question1, question2, question3, theory) {
+    async createTask(title, description, right_answer, questions, categories) {
         const task = await TaskModel.create({
             title,
             description,
-            right_awswer,
-            question1,
-            question2,
-            question3
+            right_answer,
+            question1: questions['question_1'],
+            question2: questions['question_2'],
+            question3: questions['question_3'],
+            question4: questions['question_4'],
         })
 
-        for (let i = 0; i < theory.length; i++){
+        for (let i = 0; i < theory.length; i++) {
             await CategoryTaskModel.create({
-                taskId:task.id,
-                theoryId:theory[i]
+                taskId: task.id,
+                theoryId: theory[i]
                 //TODO ---Получаю массив id теории?---
             })
         }
@@ -51,17 +67,17 @@ class AdminService {
     }
 
     async createTheory(title, content, filesList, categories) {
-        
+
         const theory = await TheoryModel.create({
             title,
             content
         })
-        
+
         //TODO ---Путь до диры со статикой в dev.---
         const uploadedFilesPath = '../client/public/files';
-        
+
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
-            if(err){
+            if (err) {
                 console.log(err.message);
             }
             console.log(`Папочка ${title} успешно создана.`);
@@ -76,7 +92,7 @@ class AdminService {
 
             await FileNameModel.create({
                 name: newFileName,
-                theoryId:theory.id 
+                theoryId: theory.id
             })
 
         }
@@ -93,8 +109,8 @@ class AdminService {
         return true
     }
 
-    async showAllCategories(){
-        const categories = await CategoryModel.findAll({raw:true})
+    async showAllCategories() {
+        const categories = await CategoryModel.findAll({raw: true})
         return categories
     }
 

@@ -12,7 +12,7 @@ export const createTheory = createAsyncThunk<
 
         try {
             const response = await extra.api.post<string>(
-                'http://localhost:3256/createTheory',
+                'admin/createTheory',
                 newTheory,
                 {
                     headers: {

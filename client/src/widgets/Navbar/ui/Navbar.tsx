@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData, UserActions } from 'entities/User';
 import { AppLink } from 'shared/UI/AppLink/AppLink';
+import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
 import classes from './Navbar.module.scss';
 
 interface NavbarProps {
@@ -18,13 +19,13 @@ export const Navbar = memo((props: NavbarProps) => {
     } = props;
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { t } = useTranslation();
-    const authData = useSelector(getAuthData);
+    const authData = useSelector(getAuthUser);
 
     const onLogout = useCallback(() => {
         dispatch(UserActions.logout());
     }, [dispatch]);
 
+    console.warn('authData', authData);
     if (authData) {
         return (
             <div className={classNames(classes.Navbar, {}, [className])}>

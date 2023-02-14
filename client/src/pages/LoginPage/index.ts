@@ -1,3 +1,3 @@
 export {
     LoginPageLazy as LoginPage,
-} from './ui/LoginPage.lazy';
+} from './ui/LoginPage/LoginPage.lazy';

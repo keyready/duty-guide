@@ -39,14 +39,14 @@ const AdminPage = memo((props: AdminPageProps) => {
     }, [dispatch]);
 
     const content = getCategories.map((category) => (
-        <div>{category.title}</div>
+        <div>{category.name}</div>
     ));
     const returnCategories = useCallback(() => {
         const categoriesForSelector: any[] = [];
 
         getCategories.forEach((category, index) => {
             categoriesForSelector.push({
-                value: category.title,
+                value: category.name,
                 content: content[index],
             });
         });
@@ -57,7 +57,7 @@ const AdminPage = memo((props: AdminPageProps) => {
     const filterAwardsNames = (selectedAwardsNames: string[]) => {
         setSelectedItems(selectedAwardsNames);
         const intersection = getCategories.filter(
-            (category) => selectedAwardsNames.includes(category.title),
+            (category) => selectedAwardsNames.includes(category.name),
         );
 
         const arr: number[] = [];
@@ -72,8 +72,6 @@ const AdminPage = memo((props: AdminPageProps) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         formData.append('categories', filteredIds.join(','));
-
-        console.warn(formData);
 
         dispatch(createTheory(formData));
     });
