@@ -4,8 +4,8 @@ class AdminControllers {
     //TODO ---Сломается из-за связи---
     async createCategory(req, res) {
         try {
-            const {name, theory} = req.body;
-            const flag = await AdminService.createCategory(name, theory)
+            const {name} = req.body;
+            const flag = await AdminService.createCategory(name)
             return res.status(200).json({message: 'Категория успешно создана.'})
         } catch (e) {
             console.log(e.message);

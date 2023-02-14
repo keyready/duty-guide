@@ -23,7 +23,7 @@ class UserControllers {
 
             const selectedUser = await UserModel.findByPk(id, {raw: true})
 
-            return res.status(200).json(selectedUser)
+            return res.cookie('session',req.session.id).status(200).json(selectedUser)
         } catch (e) {
             console.log(e.message);
             return res.status(500).json(e.message)

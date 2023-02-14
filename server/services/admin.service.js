@@ -1,15 +1,4 @@
-<<<<<<< HEAD
 const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
-=======
-const {
-    CategoryModel,
-    TaskModel,
-    TheoryModel,
-    FileNameModel,
-    CategoryTheoryModel,
-    CategoryTaskModel
-} = require('../models');
->>>>>>> a4124e46bcd822a8f7d69fb7f1efe33ef1c5cc79
 const fs = require("fs");
 const path = require("path");
 const {Op} = require('sequelize');
@@ -17,32 +6,17 @@ const crypto = require('crypto')
 
 class AdminService {
 
-    async createCategory(categoryTitle, theoryNameArray) {
-<<<<<<< HEAD
-        theoryNameArray = theoryNameArray.split(',')
-=======
-        const theoryNameArrayNew = theoryNameArray.split(',')
->>>>>>> a4124e46bcd822a8f7d69fb7f1efe33ef1c5cc79
-        const theory = await TheoryModel.findAll({
-            where:
-                {
-                    title: {
-                        [Op.in]: theoryNameArrayNew
-                    }
-                }
-        });
-
+    async createCategory(categoryTitle){
         const category = await CategoryModel.create({
             title: categoryTitle
         })
-
-        for (let i = 0; theory.length; i++) {
-            await CategoryTheoryModel.create({
-                categoryId: category.id,
-                theoryId: theory[i].id
-            })
-        }
         return true
+        // for (let i = 0; theory.length; i++) {
+        //     await CategoryTheoryModel.create({
+        //         categoryId: category.id,
+        //         theoryId: theory[i].id
+        //     })
+        // }
     }
 
     async createTask(title, description, right_answer, questions, categories) {
