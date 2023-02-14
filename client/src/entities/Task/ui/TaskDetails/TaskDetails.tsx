@@ -1,11 +1,16 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { memo, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from 'shared/UI/Loader/Loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks } from '../../model/services/fetchTasks/fetchTasks';
 import { TaskCard } from '../TaskCard/TaskCard';
-import { fetchTaskById } from '../../model/services/fetchTaskById/fetchTaskById';
-import { getTasksData, getTasksError, getTasksIsLoading } from '../../model/selectors/TaskSelector';
 import classes from './TaskDetails.module.scss';
+import {
+    getTasksData,
+    getTasksError,
+    getTasksIsLoading,
+} from '../../model/selectors/TaskSelector';
+import { Task } from '../../model/types/Task';
 
 interface TaskDetailsProps {
     className?: string;
@@ -16,15 +21,19 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
         className,
     } = props;
 
-    const dispatch = useDispatch();
     const tasks = useSelector(getTasksData);
     const isLoading = useSelector(getTasksIsLoading);
     const error = useSelector(getTasksError);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchTaskById());
-        console.log('Запрос на задания');
+        dispatch(fetchTasks());
     }, [dispatch]);
+    const [task, setTask] = useState<Task>(tasks[0]);
+
+    const renderAnswer = () => {
+        setTask(tasks[Math.floor(Math.random() * tasks.length)]);
+    };
 
     if (isLoading) {
         return (
@@ -36,21 +45,14 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
 
     return (
         <div className={classNames(classes.TaskDetails, {}, [className])}>
-            {tasks?.map((task) => (
-                <TaskCard
-                    key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    description={task.description}
-                    type={task.type}
-                    theoryId={task.theoryId}
-                    categories={task.categories}
-                    rightAnswer={task.rightAnswer}
-                    totalAnswersAmount={task.totalAnswersAmount}
-                    rightAnswers={task.rightAnswers}
-                    answers={task.answers}
-                />
-            ))}
+            {tasks.length
+                ? (
+                    <TaskCard
+                        task={task}
+                        onNextButtonClick={renderAnswer}
+                    />
+                )
+                : ''}
         </div>
     );
 });

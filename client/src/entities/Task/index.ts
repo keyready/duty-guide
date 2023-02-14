@@ -11,3 +11,4 @@ export {
     getTasksError,
     getTasksIsLoading,
 } from './model/selectors/TaskSelector';
+export { createTask } from './model/services/createTask/createTask';

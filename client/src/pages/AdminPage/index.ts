@@ -1,3 +1,3 @@
 export {
     AdminPageLazy as AdminPage,
-} from './ui/AdminPage.lazy';
+} from './ui/AdminPage/AdminPage.lazy';

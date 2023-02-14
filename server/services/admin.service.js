@@ -37,14 +37,15 @@ class AdminService {
         return true
     }
 
-    async createTask(title, description, right_answer, question1, question2, question3, theory) {
+    async createTask(title, description, right_answer, questions, categories) {
         const task = await TaskModel.create({
             title,
             description,
-            right_awswer,
-            question1,
-            question2,
-            question3
+            right_answer,
+            question1: questions['question_1'],
+            question2: questions['question_2'],
+            question3: questions['question_3'],
+            question4: questions['question_4'],
         })
 
         for (let i = 0; i < theory.length; i++) {

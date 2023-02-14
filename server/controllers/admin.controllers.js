@@ -15,8 +15,17 @@ class AdminControllers {
 
     async createTask(req, res) {
         try {
-            const {title, description, right_answer, question1, question2, question3, theory} = req.body;
-            const flag = await AdminService.createTask(title, description, right_answer, question1, question2, question3, theory);
+            const {
+                title,
+                description,
+                rightAnswer,
+                questions,
+                categories
+            } = req.body;
+
+            console.log(req.body)
+
+            const flag = await AdminService.createTask(title, description, rightAnswer, questions, categories);
             return res.status(200).json({message: 'Задание успешно добавлено.'})
         } catch (e) {
             console.log(e.message);

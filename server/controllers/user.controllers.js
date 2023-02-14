@@ -18,6 +18,9 @@ class UserControllers {
             const {id} = req.body;
             req.session.userId = id
             req.session.authorized = true
+
+            console.log(req.session)
+
             const selectedUser = await UserModel.findByPk(id, {raw: true})
 
             return res.status(200).json(selectedUser)

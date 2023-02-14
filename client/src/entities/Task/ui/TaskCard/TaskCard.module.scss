@@ -7,33 +7,28 @@
     justify-content: space-between;
 }
 
-.text {
-    color: var(--secondary-bg-color);
-    font-weight: bold;
+.title {
+    margin-bottom: 10px;
 }
 
-.answers {
-    color: green;
-}
-
-.badStat {
-    color: red;
-}
-
-.answerBlock {
+.categoriesWrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
-.wrong {
-    cursor: not-allowed;
-    background: indianred;
-    outline: darkred 2px solid;
+.category:link,
+.category:visited {
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: var(--inverted-bg-color);
+    background: var(--secondary-bg-color);
+    font-size: 16px;
+    text-decoration: none;
 }
 
-.right {
-    cursor: not-allowed;
-    background: lightgreen;
-    outline: forestgreen 2px solid;
+.description {
+    margin: 10px 0;
+    font-weight: bold;
 }

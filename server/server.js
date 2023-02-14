@@ -17,7 +17,7 @@ app.use(session({
     saveUninitialized: true,
     name:'session',
     cookie:{
-        maxAge:3600,
+        maxAge: 3600,
         sameSite:'strict'
     }
 }))

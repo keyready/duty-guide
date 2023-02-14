@@ -1,28 +1,31 @@
 import { classNames } from 'shared/lib/classNames/classNames';
+import { useTranslation } from 'react-i18next';
 import React, {
     FormEvent, memo, useCallback, useEffect, useState,
 } from 'react';
-import {
-    Category, fetchCategories, getCategoriesData, getCategoriesIsLoading,
-} from 'features/fetchCategories';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, InputSize } from 'shared/UI/Input/Input';
 import { TextArea } from 'shared/UI/TextArea/TextArea';
 import { HSelect } from 'shared/UI/HSelect/HSelect';
-import { BASE_URI } from 'mini-css-extract-plugin/types/utils';
-import { Button } from 'shared/UI/Button/Button';
-import { createTheory } from 'entities/Theory';
 import { InputFile } from 'shared/UI/InputFile/InputFile';
-import classes from './AdminPage.module.scss';
+import { Button } from 'shared/UI/Button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    fetchCategories,
+    getCategoriesData,
+    getCategoriesIsLoading,
+} from 'features/fetchCategories';
+import { createTheory } from 'entities/Theory';
+import classes from './CreateTheory.module.scss';
 
-interface AdminPageProps {
+interface CreateTheoryProps {
     className?: string;
 }
 
-const AdminPage = memo((props: AdminPageProps) => {
+export const CreateTheory = memo((props: CreateTheoryProps) => {
     const {
         className,
     } = props;
+
     const dispatch = useDispatch();
     const getCategories = useSelector(getCategoriesData);
     const isCategoriesLoading = useSelector(getCategoriesIsLoading);
@@ -31,7 +34,6 @@ const AdminPage = memo((props: AdminPageProps) => {
     const [theoryTitle, setTheoryTitle] = useState<string>('');
 
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
-    // айдишники выбранных категорий
     const [filteredIds, setFilteredIds] = useState<number[]>([]);
 
     useEffect(() => {
@@ -77,14 +79,14 @@ const AdminPage = memo((props: AdminPageProps) => {
     });
 
     return (
-        <div className={classNames(classes.AdminPage, {}, [className])}>
+        <div className={classNames(classes.CreateTheory, {}, [className])}>
             <form
                 className={classes.createTheoryWrapper}
                 onSubmit={onSubmitCreatingTheory}
                 encType="multipart/form-data"
             >
                 <Input
-                    size={InputSize.MEDIUM}
+                    size={InputSize.SMALL}
                     placeholder="Введите название теории"
                     name="title"
                     value={theoryTitle}
@@ -120,5 +122,3 @@ const AdminPage = memo((props: AdminPageProps) => {
         </div>
     );
 });
-
-export default AdminPage;

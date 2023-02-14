@@ -1,22 +1,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ThunkConfig } from 'app/providers/StoreProvider/config/StateSchema';
 
-export const createTheory = createAsyncThunk<
+export const createTask = createAsyncThunk<
     string,
     any,
     ThunkConfig<string>
 >(
-    'theory/createTheory',
-    async (newTheory, thunkAPI) => {
+    'task/createTask',
+    async (newTask, thunkAPI) => {
         const { extra, rejectWithValue } = thunkAPI;
 
         try {
             const response = await extra.api.post<string>(
-                'admin/createTheory',
-                newTheory,
+                '/admin/createTask',
+                newTask,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                     },
                 },
             );
