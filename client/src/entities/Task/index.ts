@@ -14,3 +14,4 @@ export {
 } from './model/selectors/TaskSelector';
 export { createTask } from './model/services/createTask/createTask';
 export { fetchTasksAmount } from './model/services/fetchTasksAmount/fetchTasksAmount';
+export { deleteTask } from './model/services/deleteTask/deleteTask';

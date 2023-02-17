@@ -4,7 +4,6 @@ import {
 } from 'react';
 import { Loader } from 'shared/UI/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { TaskActions } from 'entities/Task';
 import { fetchTasks } from '../../model/services/fetchTasks/fetchTasks';
 import { TaskCard } from '../TaskCard/TaskCard';
 import classes from './TaskDetails.module.scss';

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ThunkConfig } from 'app/providers/StoreProvider/config/StateSchema';
-import { UserForLoginActions, UserForLoginSlice } from 'pages/LoginPage/model/slice/UserForLoginSlice';
+import { UserForLoginActions } from 'pages/LoginPage/model/slice/UserForLoginSlice';
 import { UserForLogin } from 'pages/LoginPage/model/types/users';
 import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 
