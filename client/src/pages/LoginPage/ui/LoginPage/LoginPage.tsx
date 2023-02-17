@@ -31,7 +31,9 @@ const LoginPage = memo((props: LoginPageProps) => {
     }, [dispatch]);
 
     return (
-        <ContentWrapper title="Авторизация">
+        <ContentWrapper
+            title="Авторизация"
+        >
             {isLoading && <Loader />}
             {error && <h2>{error}</h2>}
             {allUsers?.length

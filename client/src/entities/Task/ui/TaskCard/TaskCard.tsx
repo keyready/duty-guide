@@ -11,6 +11,7 @@ interface TaskCardProps {
     answers: number;
     setAnswers: (value: number) => void;
     isEnd: boolean;
+    totalQuestions: number;
 }
 
 export const TaskCard = (props: TaskCardProps) => {
@@ -20,6 +21,7 @@ export const TaskCard = (props: TaskCardProps) => {
         setAnswers,
         answers,
         isEnd,
+        totalQuestions,
     } = props;
 
     const [answersVariants, setAnswersVariant] = useState<string[]>([]);
@@ -50,20 +52,22 @@ export const TaskCard = (props: TaskCardProps) => {
     }
 
     if (isEnd) {
+        const result = answers / totalQuestions * 100;
+
         return (
             <div className={classes.TaskCard}>
                 <h1 className={classes.resultHeader}>Тест завершен</h1>
                 <h3 className={classNames(classes.results, {
-                    [classes.bad]: answers <= 5,
-                    [classes.ok]: answers <= 7 && answers > 5,
-                    [classes.perfect]: answers <= 10 && answers > 7,
+                    [classes.bad]: result <= 50,
+                    [classes.ok]: result > 50 && result <= 70,
+                    [classes.perfect]: result >= 70,
                 })}
                 >
-                    {`Ваш результат: ${answers}`}
+                    {`Ваш результат: ${answers} (${result}%)`}
                 </h3>
-                <h2>{answers <= 5 ? 'К заступлению в наряд не готов.' : ''}</h2>
-                <h2>{answers <= 7 && answers > 5 ? 'Возможны замечания на разводе.' : ''}</h2>
-                <h2>{answers <= 10 && answers > 7 ? 'Наряд пройдет без замечаний.' : ''}</h2>
+                <h3>{result <= 50 ? 'К заступлению в наряд не готов.' : ''}</h3>
+                <h3>{result > 50 && result <= 70 ? 'Возможны замечания на разводе.' : ''}</h3>
+                <h3>{result >= 70 ? 'Наряд пройдет без замечаний.' : ''}</h3>
             </div>
         );
     }

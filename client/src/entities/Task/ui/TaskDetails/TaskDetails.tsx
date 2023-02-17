@@ -4,6 +4,7 @@ import {
 } from 'react';
 import { Loader } from 'shared/UI/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
+import { TaskActions } from 'entities/Task';
 import { fetchTasks } from '../../model/services/fetchTasks/fetchTasks';
 import { TaskCard } from '../TaskCard/TaskCard';
 import classes from './TaskDetails.module.scss';
@@ -19,7 +20,8 @@ interface TaskDetailsProps {
     setAnswers: (answersNumber: number) => void;
     answers: number;
     endOfTest: boolean;
-    setEndOfTest: (value: boolean) => void
+    setEndOfTest: (value: boolean) => void;
+    totalQuestions: number;
 }
 
 export const TaskDetails = memo((props: TaskDetailsProps) => {
@@ -29,6 +31,7 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
         answers,
         endOfTest,
         setEndOfTest,
+        totalQuestions,
     } = props;
 
     const tasks = useSelector(getTasksData);
@@ -37,6 +40,7 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
     const dispatch = useDispatch();
 
     const [task, setTask] = useState<Task>(tasks[0]);
+    const [existedTasks, setExistedTasks] = useState<number[]>([]);
     const [
         currentTask,
         setCurrentTask,
@@ -46,13 +50,19 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
         dispatch(fetchTasks());
     }, [dispatch]);
 
-    const renderAnswer = () => {
-        if (currentTask >= tasks.length || currentTask >= 10) {
+    const renderAnswer = useCallback(() => {
+        if (currentTask >= totalQuestions) {
             setEndOfTest(true);
         }
+
+        let randInd = Math.floor(Math.random() * tasks.length);
+        while (existedTasks.includes(randInd)) {
+            randInd = Math.floor(Math.random() * tasks.length);
+        }
+        setExistedTasks([...existedTasks, randInd]);
         setCurrentTask(currentTask + 1);
-        setTask(tasks[currentTask]);
-    };
+        setTask(tasks[randInd]);
+    }, [currentTask, existedTasks, setEndOfTest, tasks, totalQuestions]);
 
     if (isLoading) {
         return (
@@ -67,6 +77,7 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
             {tasks.length
                 ? (
                     <TaskCard
+                        totalQuestions={totalQuestions}
                         task={task || tasks[0]}
                         onNextButtonClick={renderAnswer}
                         answers={answers}

@@ -8,6 +8,7 @@ import { getAuthData } from 'entities/User';
 import { useNavigate } from 'react-router-dom';
 import { fetchCategories, getCategoriesData, getCategoriesIsLoading } from 'features/fetchCategories';
 import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
+import { fetchTasksAmount, getTasksAmount } from 'entities/Task';
 import classes from './MainPage.module.scss';
 
 interface MainPageProps {
@@ -23,10 +24,12 @@ const MainPage = memo((props: MainPageProps) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const categories = useSelector(getCategoriesData);
+    const tasksAmount = useSelector(getTasksAmount);
     const isLoading = useSelector((getCategoriesIsLoading));
 
     useEffect(() => {
         dispatch(fetchCategories());
+        dispatch(fetchTasksAmount());
     }, [dispatch]);
 
     const onBeginTest = () => {
@@ -51,11 +54,11 @@ const MainPage = memo((props: MainPageProps) => {
                             </ul>
                         )
                         : <li>Загрузка категорий...</li>}
-                    <p className={classes.content_text}>Вам предстоит ответить на все вопросы.</p>
-                    <p className={classes.content_text}>
-                        В тесте могут встретиться как и вопросы с выбором ответа, так и вопросы в которых необходимо
-                        записать ответ.
-                    </p>
+                    <p className={classes.content_text}>{`В нашей базе данных сейчас ${tasksAmount} заданий. Вам предстоит ответить на все вопросы.`}</p>
+                    {/* <p className={classes.content_text}> */}
+                    {/*    В тесте могут встретиться как и вопросы с выбором ответа, так и вопросы в которых необходимо */}
+                    {/*    записать ответ. */}
+                    {/* </p> */}
                     <p className={classes.content_text}>Удачи!</p>
                 </div>
 

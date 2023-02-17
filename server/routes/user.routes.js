@@ -9,4 +9,5 @@ module.exports = (app) => {
     app.post('/login', UserControllers.login)
     app.get('/logout', [checkAuth], UserControllers.logout)
     app.get('/categories', AdminControllers.showAllCategories)
+    app.get('/tasksAmount', UserControllers.fetchTasksAmount)
 }

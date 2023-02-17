@@ -1,10 +1,9 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import { useTranslation } from 'react-i18next';
 import { memo, useCallback } from 'react';
 import { Button } from 'shared/UI/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthData, UserActions } from 'entities/User';
+import { UserActions } from 'entities/User';
 import { AppLink } from 'shared/UI/AppLink/AppLink';
 import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
 import classes from './Navbar.module.scss';
@@ -22,8 +21,10 @@ export const Navbar = memo((props: NavbarProps) => {
     const authData = useSelector(getAuthUser);
 
     const onLogout = useCallback(() => {
+        document.location.reload();
+        navigate('/');
         dispatch(UserActions.logout());
-    }, [dispatch]);
+    }, [dispatch, navigate]);
 
     if (authData) {
         return (

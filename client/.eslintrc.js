@@ -39,6 +39,7 @@ module.exports = {
         'import/no-unresolved': 'off',
         'no-param-reassign': 'off',
         'import/extensions': 'off',
+        'no-mixed-operators': 'off',
         'no-shadow': 'off',
         'no-undef': 'off',
         'react/jsx-props-no-spreading': 'warn',

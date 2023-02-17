@@ -10,5 +10,7 @@ export {
     getTasksData,
     getTasksError,
     getTasksIsLoading,
+    getTasksAmount,
 } from './model/selectors/TaskSelector';
 export { createTask } from './model/services/createTask/createTask';
+export { fetchTasksAmount } from './model/services/fetchTasksAmount/fetchTasksAmount';

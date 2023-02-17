@@ -1,5 +1,5 @@
 const UserService = require('../services/user.service');
-const {UserModel} = require("../models");
+const {UserModel, TaskModel} = require("../models");
 
 class UserControllers {
 
@@ -59,6 +59,15 @@ class UserControllers {
         }
     }
 
+    async fetchTasksAmount(req, res) {
+        try {
+            const tasksAmount = await TaskModel.count()
+            return res.status(200).json(tasksAmount)
+        } catch (e) {
+            console.log(e.message)
+            return res.status(500).json(e.message)
+        }
+    }
 }
 
 module.exports = new UserControllers();

@@ -4,6 +4,7 @@ import { UserForLogin } from 'pages/LoginPage/model/types/users';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
 import { useDispatch } from 'react-redux';
 import { userLoginByLastname } from 'pages/LoginPage/model/services/userLoginByLastname';
+import { useNavigate } from 'react-router-dom';
 import classes from './UserCardForLogin.module.scss';
 
 interface UserCardForLoginProps {
@@ -18,6 +19,7 @@ export const UserCardForLogin = memo((props: UserCardForLoginProps) => {
     } = props;
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const onUserSelect = useCallback((id: number) => {
         dispatch(userLoginByLastname(id));
