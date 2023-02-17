@@ -1,6 +1,7 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import React, { memo } from 'react';
 import { HDisclosure } from 'shared/UI/HDisclosure/HDisclosure';
+import { CreateUser } from 'pages/AdminPage/ui/CreateUser/CreateUser';
 import { CreateTheory } from '../CreateTheory/CreateTheory';
 import { CreateTask } from '../CreateTask/CreateTask';
 import { CreateCategory } from '../CreateCategory/CreateCategory';
@@ -30,6 +31,10 @@ const AdminPage = memo((props: AdminPageProps) => {
                     {
                         title: 'Добавить категорию',
                         content: <CreateCategory />,
+                    },
+                    {
+                        title: 'Добавить курсанта',
+                        content: <CreateUser />,
                     },
                 ]}
             />
