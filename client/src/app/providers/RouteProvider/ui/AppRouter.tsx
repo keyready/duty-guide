@@ -7,7 +7,6 @@ import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelect
 
 const AppRouter = () => {
     const isAuth = useSelector(getAuthUser);
-    console.log(isAuth);
 
     const routes = useMemo(() => Object.values(routerConfig).filter((route) => {
         if (route.authOnly && !isAuth) {
@@ -34,8 +33,6 @@ const AppRouter = () => {
             />
         );
     }, []);
-
-    console.log(routes);
 
     return (
         <Routes>

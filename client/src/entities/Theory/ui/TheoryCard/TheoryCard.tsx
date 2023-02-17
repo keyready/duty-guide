@@ -25,7 +25,7 @@ export const TheoryCard = memo((props: TheoryCardProps) => {
                 ))}
             </div>
             <p className={classes.theoryCard__content}>{data?.content}</p>
-            {data?.filesNames.length
+            {data?.files.length
                 ? (
                     <>
                         <h2
@@ -36,11 +36,11 @@ export const TheoryCard = memo((props: TheoryCardProps) => {
                         <div
                             className={classes.filesWrapper}
                         >
-                            {data?.filesNames?.map((file) => (
+                            {data?.files?.map((file) => (
                                 <a
                                     className={classes.file}
-                                    key={file.hashName}
-                                    href={`files/${data?.title}/${file.hashName}`}
+                                    key={file.name}
+                                    href={`files/${data?.title}/${file.name}`}
                                     download
                                 >
                                     {file.name}

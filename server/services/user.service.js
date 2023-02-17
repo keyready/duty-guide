@@ -1,79 +1,92 @@
-const {UserModel,TheoryModel, TaskModel, CategoryModel,FileNameModel,CategoryTheoryModel, SolveModel, CategoryTaskModel} = require('../models')
+const {
+    UserModel,
+    TheoryModel,
+    TaskModel,
+    CategoryModel,
+    FileNameModel,
+    CategoryTheoryModel,
+    SolveModel,
+    CategoryTaskModel
+} = require('../models')
 const {Op} = require('sequelize');
 
 class UserService {
 
-    async startApp(){
-        const users = await UserModel.findAll({raw:true});
+    async startApp() {
+        const users = await UserModel.findAll({raw: true});
         return users
     }
 
-    async showAllTheory(){
+    async showAllTheory() {
         // Теория
-        const theoryObjects = await TheoryModel.findAll({raw:true})
+        const theoryObjects = await TheoryModel.findAll({raw: true})
 
         //Возвращение всех файлов в соответствие каждому объекту теории.
-        theoryObjects.forEach(th =>{
-            th.files = FileNameModel.findAll({where:{theoryId:th.id}})
-        }) 
+        theoryObjects.map(async (th) => {
+            th.files = await FileNameModel.findAll({where: {theoryId: th.id}})
+        })
 
-        let ArrayIdFromOneTheory=[]
-        for (let i = 0; i < theoryObjects.length; i++){
-            let categoryIdObjectsFromOneTheoryObjects = CategoryTheoryModel.findAll(
+        let ArrayIdFromOneTheory = []
+        for (let i = 0; i < theoryObjects.length; i++) {
+            let categoryIdObjectsFromOneTheoryObjects = await CategoryTheoryModel.findAll(
                 {
                     where:
-                    {
-                        theoryId:theoryObjects[i].id
-                    },
-                    attributes:['categoryId']
+                        {
+                            theoryId: theoryObjects[i].id
+                        },
+                    attributes: ['categoryId']
                 }
             )
             //Категории для одной теории в id-объектах. -> массив id категорий для одного объекта теории -> имя категорий для одного объекта в массиве
-            for (let j = 0; j < categoryIdObjectsFromOneTheoryObjects.length;j++){
+            for (let j = 0; j < categoryIdObjectsFromOneTheoryObjects.length; j++) {
                 ArrayIdFromOneTheory.push(categoryIdObjectsFromOneTheoryObjects[j].categoryId)
             }
-            const categoriesNameObjectsFromOneTheory = CategoryModel.findAll(
+            const categoriesNameObjectsFromOneTheory = await CategoryModel.findAll(
                 {
-                    where:{
-                        id:{
-                            [Op.in]:ArrayIdFromOneTheory
+                    where: {
+                        id: {
+                            [Op.in]: ArrayIdFromOneTheory
                         }
                     },
-                    attributes:['title']
+                    attributes: ['title'],
+                    raw: true
                 })
             let categoriesNameArrayFromOneTheory = []
-            for(let k = 0; k < categoriesNameObjectsFromOneTheory.length;k++){
-                categoriesNameArrayFromOneTheory.push(categoriesNameObjectsFromOneTheory[i].title)
+            for (let k = 0; k < categoriesNameObjectsFromOneTheory.length; k++) {
+                categoriesNameArrayFromOneTheory.push(categoriesNameObjectsFromOneTheory[k].title)
             }
             theoryObjects[i].categories = categoriesNameArrayFromOneTheory
         }
-        return theory
-    }    
 
-    async showAllTasks(){
-        const tasks = await TaskModel.findAll({raw:true})
-        tasks.forEach(task =>{
-            const categoriesArrayObjectsId = CategoryTaskModel.findAll(
+        return theoryObjects
+    }
+
+    async showAllTasks() {
+        const tasks = await TaskModel.findAll({raw: true})
+        tasks.map(async (task) => {
+            const categoriesArrayObjectsId = await CategoryTaskModel.findAll(
                 {
-                    where:{
-                        taskId:task.id
+                    where: {
+                        taskId: task.id
                     },
-                    attributes:['categoryId']
+                    attributes: ['categoryId']
                 }
             )
             let categoriesArrayId = []
-            categoriesArrayObjectsId.map(oneOjb =>{
+            categoriesArrayObjectsId.map(oneOjb => {
                 categoriesArrayId.push(oneOjb.categoryId)
             })
-            task.categories = CategoryModel.findAll({
-                where:{
-                    id:{
-                        [Op.in]:categoriesArrayId
+            task.categories = await CategoryModel.findAll({
+                where: {
+                    id: {
+                        [Op.in]: categoriesArrayId
                     }
                 }
             })
         })
-        return tasks   
+        console.log(tasks)
+
+        return tasks
     }
 
 }

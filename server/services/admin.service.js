@@ -23,17 +23,17 @@ class AdminService {
         const task = await TaskModel.create({
             title,
             description,
-            right_answer,
+            rightAnswer: right_answer,
             question1: questions['question_1'],
             question2: questions['question_2'],
             question3: questions['question_3'],
             question4: questions['question_4'],
         })
 
-        for (let i = 0; i < theory.length; i++) {
+        for (let i = 0; i < categories.length; i++) {
             await CategoryTaskModel.create({
                 taskId: task.id,
-                theoryId: theory[i]
+                categoryId: categories[i]
                 //TODO ---Получаю массив id теории?---
             })
         }
@@ -64,11 +64,11 @@ class AdminService {
 
             filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
 
+            console.log(newFileName)
             await FileNameModel.create({
                 name: newFileName,
                 theoryId: theory.id
             })
-
         }
 
         //TODO ---Массив или строка?---

@@ -10,7 +10,7 @@ module.exports = DB.define('tasks', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    right_answer: {
+    rightAnswer: {
         type: DataTypes.STRING,
         allowNull: false
     },

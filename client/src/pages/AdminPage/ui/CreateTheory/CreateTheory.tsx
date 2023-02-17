@@ -41,14 +41,14 @@ export const CreateTheory = memo((props: CreateTheoryProps) => {
     }, [dispatch]);
 
     const content = getCategories.map((category) => (
-        <div>{category.name}</div>
+        <div key={category.id}>{category.title}</div>
     ));
     const returnCategories = useCallback(() => {
         const categoriesForSelector: any[] = [];
 
         getCategories.forEach((category, index) => {
             categoriesForSelector.push({
-                value: category.name,
+                value: category.title,
                 content: content[index],
             });
         });
@@ -59,7 +59,7 @@ export const CreateTheory = memo((props: CreateTheoryProps) => {
     const filterAwardsNames = (selectedAwardsNames: string[]) => {
         setSelectedItems(selectedAwardsNames);
         const intersection = getCategories.filter(
-            (category) => selectedAwardsNames.includes(category.name),
+            (category) => selectedAwardsNames.includes(category.title),
         );
 
         const arr: number[] = [];

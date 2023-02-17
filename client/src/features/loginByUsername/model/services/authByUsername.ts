@@ -27,8 +27,6 @@ export const authByUsername = createAsyncThunk<
                     authData,
                 );
 
-                console.log(response.data);
-
                 if (!response.data) {
                     throw new Error();
                 }

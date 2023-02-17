@@ -46,14 +46,14 @@ export const CreateTask = memo((props: CreateTaskProps) => {
     }, [dispatch]);
 
     const content = getCategories.map((category) => (
-        <div>{category.name}</div>
+        <div>{category.title}</div>
     ));
     const returnCategories = useCallback(() => {
         const categoriesForSelector: any[] = [];
 
         getCategories.forEach((category, index) => {
             categoriesForSelector.push({
-                value: category.name,
+                value: category.title,
                 content: content[index],
             });
         });
@@ -64,7 +64,7 @@ export const CreateTask = memo((props: CreateTaskProps) => {
     const filterCategoriesNames = (selectedAwardsNames: string[]) => {
         setSelectedItems(selectedAwardsNames);
         const intersection = getCategories.filter(
-            (category) => selectedAwardsNames.includes(category.name),
+            (category) => selectedAwardsNames.includes(category.title),
         );
 
         const arr: number[] = [];
