@@ -18,8 +18,8 @@ services:
     image: nginx
     build: /nginx
     restart: always
-    #volumes:
-    #  - ./dist:/app/dist
+    volumes:
+      - ./dist:/app/dist
     ports:
       - 80:80
     depends_on:
