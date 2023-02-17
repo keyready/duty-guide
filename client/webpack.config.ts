@@ -12,11 +12,11 @@ export default (env: BuildEnv) => {
         mode,
         paths: {
             entry: path.resolve(__dirname, 'src'),
-            dist: path.resolve(__dirname, 'dist'),
+            dist: path.resolve(__dirname, '../dist'),
             html: path.resolve(__dirname, 'public/index.html'),
             src: path.resolve(__dirname, 'src'),
             static: path.resolve(__dirname, 'public/files'),
-            staticBuild: path.resolve(__dirname, 'dist/files'),
+            staticBuild: path.resolve(__dirname, '../dist/files'),
         },
         isDev,
         port,

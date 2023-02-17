@@ -4,7 +4,6 @@ import { memo, useEffect } from 'react';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
 import { ContentWrapper } from 'widgets/ContentWrapper/ContentWrapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthData } from 'entities/User';
 import { useNavigate } from 'react-router-dom';
 import { fetchCategories, getCategoriesData, getCategoriesIsLoading } from 'features/fetchCategories';
 import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
@@ -19,6 +18,10 @@ const MainPage = memo((props: MainPageProps) => {
     const {
         className,
     } = props;
+
+    useEffect(() => {
+        document.title = 'Главная';
+    });
 
     const authData = useSelector(getAuthUser);
     const navigate = useNavigate();

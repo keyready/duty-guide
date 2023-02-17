@@ -28,6 +28,7 @@ const LoginPage = memo((props: LoginPageProps) => {
 
     useEffect(() => {
         dispatch(fetchUsersForLogin());
+        document.title = 'Авторизация';
     }, [dispatch]);
 
     return (

@@ -29,6 +29,7 @@ const TestingPage = memo((props: TestingPageProps) => {
 
     useEffect(() => {
         dispatch(fetchTasksAmount());
+        document.title = 'Тестирование';
     }, [dispatch]);
 
     const tasksPickerHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {

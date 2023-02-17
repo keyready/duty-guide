@@ -1,5 +1,5 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { HDisclosure } from 'shared/UI/HDisclosure/HDisclosure';
 import { CreateUser } from 'pages/AdminPage/ui/CreateUser/CreateUser';
 import { CreateTheory } from '../CreateTheory/CreateTheory';
@@ -15,6 +15,10 @@ const AdminPage = memo((props: AdminPageProps) => {
     const {
         className,
     } = props;
+
+    useEffect(() => {
+        document.title = 'Админка';
+    });
 
     return (
         <div className={classNames(classes.AdminPage, {}, [className])}>
