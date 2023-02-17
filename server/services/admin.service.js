@@ -110,7 +110,6 @@ class AdminService {
         const categories = await CategoryModel.findAll({raw: true})
         return categories
     }
-
 }
 
 module.exports = new AdminService();
