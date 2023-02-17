@@ -74,6 +74,9 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
 
     return (
         <div className={classNames(classes.TaskDetails, {}, [className])}>
+            {!endOfTest && (
+                <h3>{`Вопрос ${currentTask} из ${totalQuestions}`}</h3>
+            )}
             {tasks.length
                 ? (
                     <TaskCard
