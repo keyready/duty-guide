@@ -1,0 +1,29 @@
+.AppLink {
+    color: var(--bg-color);
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    line-height: 24px;
+}
+
+.AppLink::after {
+    width: 0;
+    height: 2px;
+    display: block;
+    transition: width 0.2s ease-in-out;
+    content: "";
+    background-color: var(--secondary-bg-color);
+}
+
+.AppLink:hover::after {
+    width: 100%;
+}
+
+.inverted {
+    color: var(--inverted-bg-color);
+}
+
+.inverted::after {
+    background-color: var(--inverted-bg-color);
+}

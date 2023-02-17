@@ -56,45 +56,31 @@ class AdminService {
             content
         })
 
-        
         //TODO ---Путь до диры со статикой в dev.---
-        const uploadedFilesPath = '../dist/files';
-        
+        const uploadedFilesPath = '../client/public/files';
+
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
             if (err) {
                 console.log(err.message);
             }
             console.log(`Папочка ${title} успешно создана.`);
         })
-        if (typeof(filesList.files) == 'object') {
-            const dot = filesList.name.lastIndexOf('.')
 
-            const newFileName = crypto.randomBytes(5).toString('hex') + filesList.name.substr(dot)
+        for (let i = 0; i < filesList.length; i++) {
+            const dot = filesList[i].name.lastIndexOf('.');
 
-            filesList.mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
+            const newFileName = crypto.randomBytes(5).toString('hex') + filesList[i].name.substr(dot)
 
+            filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
+
+            console.log(newFileName)
             await FileNameModel.create({
-                name:newFileName,
-                theoryId:theory.id
+                name: newFileName,
+                theoryId: theory.id
             })
-
-        }
-        else {        
-            for (let i = 0; i < filesList.length; i++) {
-                const dot = filesList[i].name.lastIndexOf('.');
-
-                const newFileName = crypto.randomBytes(5).toString('hex') + filesList[i].name.substr(dot)
-
-                filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
-
-                console.log('Добавил вот этот файл',newFileName)
-                await FileNameModel.create({
-                    name: newFileName,
-                    theoryId: theory.id
-                })
-            }
         }
 
+        //TODO ---Массив или строка?---
         const idsArray = categories.split(',')
         for (let i = 0; i < idsArray.length; i++) {
             await CategoryTheoryModel.create({

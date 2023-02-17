@@ -8,7 +8,7 @@ const session = require('express-session');
 const app = express();
 
 app.use(cors())
-app.use(express.static(path.resolve('../dist/')))
+app.use(express.static(path.resolve('../client/public/')))
 app.use(express.json())
 app.use(fileupload({}))
 app.use(session({
@@ -31,7 +31,7 @@ const StartApp = async () => {
         await DB.sync()
         // await DB.sync({force: true})
         await app.get('/*', (req, res) => {
-            return res.sendFile(path.resolve('../dist/index.html'))
+            return res.sendFile(path.resolve('../client/public/index.html'))
         })
         await app.listen(5000, () => {
             console.log('Server started on http://localhost:5000')

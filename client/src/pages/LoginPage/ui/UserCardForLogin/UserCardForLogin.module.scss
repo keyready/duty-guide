@@ -1,0 +1,15 @@
+.UserCardForLogin {
+	padding: 20px;
+	outline: 2px solid var(--secondary-bg-color);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.info {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}

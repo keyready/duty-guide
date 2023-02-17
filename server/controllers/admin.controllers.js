@@ -77,7 +77,6 @@ class AdminControllers {
     async createTheory(req, res) {
         try {
             const {title, content, categories} = req.body;
-            console.log(req.files);
             const flag = await AdminService.createTheory(title, content, req.files.files, categories)
             return res.status(200).json({message: 'Теория успешно добавлена.'})
         } catch (e) {
