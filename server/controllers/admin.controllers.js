@@ -1,5 +1,36 @@
 const AdminService = require('../services/admin.service');
+const {TaskModel, CategoryModel, TheoryModel} = require("../models");
 class AdminControllers {
+
+    async deleteTask(req, res) {
+        try {
+            await TaskModel.destroy({where: {id: req.body.id}})
+            res.status(200).json({message: 'Успешно удалено'})
+        } catch (e) {
+            console.log(e.message)
+            return res.status(500).json(e.message)
+        }
+    }
+
+    async deleteTheory(req, res) {
+        try {
+            await TheoryModel.destroy({where: {id: req.body.id}})
+            res.status(200).json({message: 'Успешно удалено'})
+        } catch (e) {
+            console.log(e.message)
+            return res.status(500).json(e.message)
+        }
+    }
+
+    async deleteCategory(req, res) {
+        try {
+            await CategoryModel.destroy({where: {id: req.body.id}})
+            res.status(200).json({message: 'Успешно удалено'})
+        } catch (e) {
+            console.log(e.message)
+            return res.status(500).json(e.message)
+        }
+    }
 
     async createUser(req,res){
         try{
