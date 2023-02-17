@@ -20,8 +20,6 @@ export const fetchTheory = createAsyncThunk<
                 }
                 dispatch(TheoryActions.setTheoryData(response.data));
 
-                console.log(response.data);
-
                 return response.data;
             } catch (e) {
                 console.log(e);

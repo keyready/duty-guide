@@ -4,6 +4,9 @@ export interface Task {
     description: string;
     theoryId: number;
     categories: string[];
-    answersVariants: string[],
-    rightAnswer: number
+    question1: string;
+    question2: string;
+    question3: string;
+    question4: string;
+    rightAnswer: string
 }

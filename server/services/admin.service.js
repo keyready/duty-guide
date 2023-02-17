@@ -23,17 +23,17 @@ class AdminService {
         const task = await TaskModel.create({
             title,
             description,
-            right_answer,
+            rightAnswer: right_answer,
             question1: questions['question_1'],
             question2: questions['question_2'],
             question3: questions['question_3'],
             question4: questions['question_4'],
         })
 
-        for (let i = 0; i < theory.length; i++) {
+        for (let i = 0; i < categories.length; i++) {
             await CategoryTaskModel.create({
                 taskId: task.id,
-                theoryId: theory[i]
+                categoryId: categories[i]
                 //TODO ---Получаю массив id теории?---
             })
         }
@@ -47,31 +47,45 @@ class AdminService {
             content
         })
 
+        
         //TODO ---Путь до диры со статикой в dev.---
-        const uploadedFilesPath = '../client/public/files';
-
+        const uploadedFilesPath = '../client/dist/files';
+        
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
             if (err) {
                 console.log(err.message);
             }
             console.log(`Папочка ${title} успешно создана.`);
         })
+        if (typeof(filesList.files) == 'object') {
+            const dot = filesList.name.lastIndexOf('.')
 
-        for (let i = 0; i < filesList.length; i++) {
-            const dot = filesList[i].name.lastIndexOf('.');
+            const newFileName = crypto.randomBytes(5).toString('hex') + filesList.name.substr(dot)
 
-            const newFileName = crypto.randomBytes(5).toString('hex') + filesList[i].name.substr(dot)
-
-            filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
+            filesList.mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
 
             await FileNameModel.create({
-                name: newFileName,
-                theoryId: theory.id
+                name:newFileName,
+                theoryId:theory.id
             })
 
         }
+        else {        
+            for (let i = 0; i < filesList.length; i++) {
+                const dot = filesList[i].name.lastIndexOf('.');
 
-        //TODO ---Массив или строка?---
+                const newFileName = crypto.randomBytes(5).toString('hex') + filesList[i].name.substr(dot)
+
+                filesList[i].mv(path.resolve(`${uploadedFilesPath}/${title}/${newFileName}`))
+
+                console.log('Добавил вот этот файл',newFileName)
+                await FileNameModel.create({
+                    name: newFileName,
+                    theoryId: theory.id
+                })
+            }
+        }
+
         const idsArray = categories.split(',')
         for (let i = 0; i < idsArray.length; i++) {
             await CategoryTheoryModel.create({

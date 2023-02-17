@@ -10,5 +10,5 @@ export interface Theory {
     title: string;
     content: string;
     categories: number[];
-    filesNames: FileName[];
+    files: FileName[];
 }

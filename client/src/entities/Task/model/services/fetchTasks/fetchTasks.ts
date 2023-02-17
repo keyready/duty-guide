@@ -11,7 +11,6 @@ export const fetchTasks = createAsyncThunk<
         'task/fetchTasks',
         async (_, thunkAPI) => {
             const { dispatch, extra, rejectWithValue } = thunkAPI;
-            console.log('запрос на таски');
 
             try {
                 const response = await extra.api.get<Task[]>('/tasks');

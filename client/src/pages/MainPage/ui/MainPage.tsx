@@ -46,7 +46,7 @@ const MainPage = memo((props: MainPageProps) => {
                         ? (
                             <ul>
                                 {categories?.map((category) => (
-                                    <li>{category.name}</li>
+                                    <li key={category.id}>{category.title}</li>
                                 ))}
                             </ul>
                         )

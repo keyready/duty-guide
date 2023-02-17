@@ -35,7 +35,7 @@ export const TheoryDetails = memo((props: TheoryDetailsProps) => {
 
     return (
         <div className={classNames(classes.TheoryDetails, {}, [className])}>
-            {data
+            {data?.length
                 ? data?.map((pos) => (
                     <TheoryCard
                         key={pos.id}
