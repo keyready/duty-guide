@@ -51,7 +51,7 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
             setEndOfTest(true);
         }
         setCurrentTask(currentTask + 1);
-        setTask(tasks[Math.floor(Math.random() * tasks.length)]);
+        setTask(tasks[currentTask]);
     };
 
     if (isLoading) {

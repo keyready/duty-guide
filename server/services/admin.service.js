@@ -1,4 +1,4 @@
-const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
+const {UserModel,CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
 const fs = require("fs");
 const path = require("path");
 const {Op} = require('sequelize');
@@ -6,6 +6,15 @@ const crypto = require('crypto')
 
 class AdminService {
 
+    async createUser(firstname,middlename,lastname,role){
+        const user = await UserModel.create({
+            firstname,
+            middlename,
+            lastname,
+            role
+        })
+        return user
+    }
     async createCategory(categoryTitle){
         const category = await CategoryModel.create({
             title: categoryTitle
