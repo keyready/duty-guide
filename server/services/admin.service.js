@@ -1,4 +1,4 @@
-const {CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
+const {UserModel,CategoryModel, TaskModel, TheoryModel, FileNameModel, CategoryTheoryModel, CategoryTaskModel} = require('../models');
 const fs = require("fs");
 const path = require("path");
 const {Op} = require('sequelize');
@@ -6,6 +6,15 @@ const crypto = require('crypto')
 
 class AdminService {
 
+    async createUser(firstname,middlename,lastname,role){
+        const user = await UserModel.create({
+            firstname,
+            middlename,
+            lastname,
+            role
+        })
+        return user
+    }
     async createCategory(categoryTitle){
         const category = await CategoryModel.create({
             title: categoryTitle
@@ -49,7 +58,7 @@ class AdminService {
 
         
         //TODO ---Путь до диры со статикой в dev.---
-        const uploadedFilesPath = '../client/dist/files';
+        const uploadedFilesPath = '../dist/files';
         
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
             if (err) {

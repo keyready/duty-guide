@@ -6,8 +6,8 @@ const { Sequelize } = require('sequelize');
 //     port: 5432
 // })
 
-module.exports = new Sequelize('duty', 'k0fanov36', 'k0fanov36', {
+module.exports = new Sequelize('duty', 'admin', 'admin', {
     dialect: 'postgres',
-    host: 'localhost',
+    host: 'db',
     port: 5432
 })

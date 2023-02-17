@@ -1,7 +1,17 @@
 const AdminService = require('../services/admin.service');
-
 class AdminControllers {
-    //TODO ---Сломается из-за связи---
+
+    async createUser(req,res){
+        try{
+            const {firstname,middlename,lastname,role} = req.body;
+            const user = await AdminService.createUser(firstname,middlename,lastname,role)
+            return res.status(200).json({msg:'Добавил пользователя'})
+        }
+        catch (e){
+            console.log(e.message)
+            return res.status(500).json(e.message)
+        }
+    }
     async createCategory(req, res) {
         try {
             const {name} = req.body;
