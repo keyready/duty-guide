@@ -5,7 +5,6 @@ import { ContentWrapper } from 'widgets/ContentWrapper/ContentWrapper';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from 'shared/UI/Loader/Loader';
-import { Button, Modal } from 'react-bootstrap';
 import { Input, InputSize } from 'shared/UI/Input/Input';
 import { useDebounce } from 'shared/hooks/useDebounce/useDebounce';
 import { UserCardForLogin } from '../UserCardForLogin/UserCardForLogin';
@@ -32,15 +31,11 @@ const LoginPage = memo((props: LoginPageProps) => {
     const error = useSelector(getAllUsersError);
     const isLoading = useSelector(getAllUsersIsLoading);
 
-    const [show, setShow] = useState(false);
     const [queryString, setQueryString] = useState<string>('');
-
-    const handleClose = () => setShow(false);
 
     useEffect(() => {
         dispatch(fetchUsersForLogin(''));
         document.title = 'Авторизация';
-        setShow(true);
     }, [dispatch]);
 
     const fetchData = useCallback((value: string) => {
@@ -57,27 +52,6 @@ const LoginPage = memo((props: LoginPageProps) => {
         <ContentWrapper
             title="Авторизация"
         >
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-                centered
-            >
-                <Modal.Header>
-                    <Modal.Title>Дисклеймер</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Версия приложения: 1.0.3. В данной версии существует уязвимость, из-за которой можно узнать пароль
-                    от администратора. Если кто-то захочет "повеселиться" - помните, что все действия записываются с
-                    точной датой и временем. Последствия будут.
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleClose}>
-                        Понятно.
-                    </Button>
-                </Modal.Footer>
-            </Modal>
 
             {isLoading && <Loader />}
             {error && <h2>{error}</h2>}
