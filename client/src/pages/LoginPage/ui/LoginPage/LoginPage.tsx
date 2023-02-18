@@ -1,16 +1,21 @@
-import { memo, useEffect, useState } from 'react';
+import {
+    memo, useCallback, useEffect, useState,
+} from 'react';
 import { ContentWrapper } from 'widgets/ContentWrapper/ContentWrapper';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Loader } from 'shared/UI/Loader/Loader';
+import { Button, Modal } from 'react-bootstrap';
+import { Input, InputSize } from 'shared/UI/Input/Input';
+import { useDebounce } from 'shared/hooks/useDebounce/useDebounce';
+import { UserCardForLogin } from '../UserCardForLogin/UserCardForLogin';
+import { fetchUsersForLogin } from '../../model/services/fetchUsersForLogin';
 import {
     getAllUsers,
     getAllUsersError,
     getAllUsersIsLoading,
-} from 'pages/LoginPage/model/selectors/usersForLoginSelector';
-import { fetchUsersForLogin } from 'pages/LoginPage/model/services/fetchUsersForLogin';
-import { UserCardForLogin } from 'pages/LoginPage/ui/UserCardForLogin/UserCardForLogin';
-import { Loader } from 'shared/UI/Loader/Loader';
-import { Button, Modal } from 'react-bootstrap';
+} from '../../model/selectors/usersForLoginSelector';
+import classes from './LoginPage.module.scss';
 
 interface LoginPageProps {
     className?: string;
@@ -28,14 +33,25 @@ const LoginPage = memo((props: LoginPageProps) => {
     const isLoading = useSelector(getAllUsersIsLoading);
 
     const [show, setShow] = useState(false);
+    const [queryString, setQueryString] = useState<string>('');
 
     const handleClose = () => setShow(false);
 
     useEffect(() => {
-        dispatch(fetchUsersForLogin());
+        dispatch(fetchUsersForLogin(''));
         document.title = 'Авторизация';
         setShow(true);
     }, [dispatch]);
+
+    const fetchData = useCallback((value: string) => {
+        dispatch(fetchUsersForLogin(value));
+    }, [dispatch]);
+    const debouncedFetchData = useDebounce(fetchData, 700);
+
+    const onChangeSearch = useCallback((value) => {
+        setQueryString(value);
+        debouncedFetchData(value);
+    }, [debouncedFetchData]);
 
     return (
         <ContentWrapper
@@ -65,11 +81,19 @@ const LoginPage = memo((props: LoginPageProps) => {
 
             {isLoading && <Loader />}
             {error && <h2>{error}</h2>}
+
+            <Input
+                className={classes.input}
+                size={InputSize.SMALL}
+                value={queryString}
+                onChange={onChangeSearch}
+                placeholder="Начните вводить ФАМИЛИЮ"
+            />
             {allUsers?.length
                 ? allUsers?.map((user) => (
                     <UserCardForLogin user={user} key={user.id} />
                 ))
-                : ''}
+                : 'Пользователей не найдено'}
         </ContentWrapper>
     );
 });

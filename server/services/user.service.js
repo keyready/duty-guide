@@ -12,8 +12,19 @@ const {Op} = require('sequelize');
 
 class UserService {
 
-    async startApp() {
-        const users = await UserModel.findAll({raw: true});
+    async startApp(lastname) {
+        const users = await UserModel.findAll({
+            raw: true,
+            where: {
+                lastname: {
+                    [Op.substring]: lastname
+                }
+            },
+            order: [
+                ['lastname', 'ASC']
+            ]
+        });
+
         return users
     }
 

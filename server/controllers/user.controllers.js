@@ -5,7 +5,9 @@ class UserControllers {
 
     async startApp(req, res) {
         try {
-            const users = await UserService.startApp()
+            console.log('запрос:', req.body)
+
+            const users = await UserService.startApp(req.body.lastname)
             return res.status(200).json(users)
         } catch (e) {
             console.log(e.message);

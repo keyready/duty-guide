@@ -5,15 +5,18 @@ import { UserForLoginActions } from 'pages/LoginPage/model/slice/UserForLoginSli
 
 export const fetchUsersForLogin = createAsyncThunk<
     UserForLogin[],
-    void,
+    string,
     ThunkConfig<string>
 >(
     'task/fetchTaskData',
-    async (_, thunkAPI) => {
+    async (searching, thunkAPI) => {
         const { dispatch, extra, rejectWithValue } = thunkAPI;
 
         try {
-            const response = await extra.api.get<UserForLogin[]>('/loginUsers');
+            const response = await extra.api.post<UserForLogin[]>(
+                '/loginUsers',
+                { lastname: searching },
+            );
 
             if (!response.data) {
                 throw new Error();
