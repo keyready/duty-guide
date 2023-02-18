@@ -6,16 +6,17 @@ import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 
 export const userLoginByLastname = createAsyncThunk<
     UserForLogin,
-    number,
+    { id: number, password?: string },
     ThunkConfig<string>
 >(
     'login/userLoginByLastname',
-    async (id, thunkAPI) => {
+    async ({ id, password }, thunkAPI) => {
         const { dispatch, extra, rejectWithValue } = thunkAPI;
 
         try {
             const response = await extra.api.post<UserForLogin>('/login', {
                 id,
+                password,
             });
 
             if (!response.data) {
@@ -29,7 +30,7 @@ export const userLoginByLastname = createAsyncThunk<
             return response.data;
         } catch (e) {
             console.log(e);
-            return rejectWithValue('error');
+            return rejectWithValue('Произошла ошибка, скорее всего неверный пароль для админа');
         }
     },
 );

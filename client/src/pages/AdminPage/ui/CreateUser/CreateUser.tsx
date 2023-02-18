@@ -3,11 +3,10 @@ import {
     FormEvent, memo, useCallback, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { createCategory } from 'entities/Category';
 import { Input, InputSize } from 'shared/UI/Input/Input';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
 import { createUser } from 'entities/User/model/services/UserService';
-import { HSelect } from 'shared/UI/HSelect/HSelect';
+import { Form } from 'react-bootstrap';
 import classes from './CreateUser.module.scss';
 
 interface CreateUserProps {
@@ -22,23 +21,28 @@ export const CreateUser = memo((props: CreateUserProps) => {
     const [firstname, setFirstname] = useState<string>('');
     const [lastname, setLastname] = useState<string>('');
     const [middlename, setMiddlename] = useState<string>('');
-    const [role, setRole] = useState<string>('');
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [password, setPassword] = useState<string>('');
     const dispatch = useDispatch();
 
     const sendCategory = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const role = isAdmin ? 'admin' : 'user';
+        const passwordSend = isAdmin ? password : '';
 
         dispatch(createUser({
             firstname,
             middlename,
             lastname,
             role,
+            passwordSend,
         }));
         setLastname('');
         setFirstname('');
         setMiddlename('');
-        setRole('');
-    }, [dispatch, firstname, lastname, middlename, role]);
+        setPassword('');
+    }, [dispatch, firstname, isAdmin, lastname, middlename, password]);
 
     return (
         <div className={classNames(classes.CreateCategory, {}, [className])}>
@@ -61,12 +65,26 @@ export const CreateUser = memo((props: CreateUserProps) => {
                     value={middlename}
                     onChange={setMiddlename}
                 />
-                <Input
-                    size={InputSize.SMALL}
-                    placeholder="Роль (admin | user)"
-                    value={role}
-                    onChange={setRole}
-                />
+
+                <Form
+                    className={classes.adminForm}
+                >
+                    <p>Админ?</p>
+                    <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        onChange={() => setIsAdmin((prev) => !prev)}
+                    />
+                </Form>
+                {isAdmin && (
+                    <Input
+                        size={InputSize.SMALL}
+                        placeholder="Пароль"
+                        value={password}
+                        onChange={setPassword}
+                    />
+                )}
+
                 <Button
                     theme={ButtonTheme.PRIMARY}
                     type="submit"

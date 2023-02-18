@@ -7,6 +7,7 @@ export interface createUserInitial {
     lastname: string;
     middlename: string;
     role: string;
+    passwordSend: string;
 }
 
 export const createUser = createAsyncThunk<

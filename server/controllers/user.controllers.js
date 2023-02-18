@@ -17,11 +17,14 @@ class UserControllers {
 
     async login(req, res) {
         try {
-            const {id} = req.body;
+            const {id, password} = req.body;
             req.session.userId = id
             req.session.authorized = true
             req.session.save(async () => {
                 const selectedUser = await UserModel.findByPk(id, {raw: true})
+                if (selectedUser.role === 'admin' && password !== selectedUser.password) {
+                    return res.status(403).json({message: 'Неверный пароль'})
+                }
                 return res.cookie('session', req.session.id).status(200).json(selectedUser)
             });
         } catch (e) {

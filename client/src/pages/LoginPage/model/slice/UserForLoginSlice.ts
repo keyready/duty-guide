@@ -38,9 +38,9 @@ export const UserForLoginSlice = createSlice({
             state.error = undefined;
             state.allUsers = action.payload;
         })
-        .addCase(fetchUsersForLogin.rejected, (state) => {
+        .addCase(fetchUsersForLogin.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = 'action.payload';
+            state.error = String(action.error);
         }),
 
 });
