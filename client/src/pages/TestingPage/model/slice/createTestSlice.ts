@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Task } from 'entities/Task';
+import { updateStatistics } from 'pages/TestingPage/model/service/updateStatistics';
 import { createTest } from '../service/createTest';
 import { Test, TestSchema } from '../type/Test';
 
@@ -33,8 +34,20 @@ export const CreateTestSlice = createSlice({
         .addCase(createTest.rejected, (state, action) => {
             state.isLoading = false;
             state.error = String(action.error);
-        }),
+        })
 
+        .addCase(updateStatistics.pending, (state) => {
+            state.isLoading = true;
+            state.error = '';
+        })
+        .addCase(updateStatistics.fulfilled, (state) => {
+            state.isLoading = false;
+            state.error = '';
+        })
+        .addCase(updateStatistics.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = String(action.error);
+        }),
 });
 
 export const { actions: CreateTestActions } = CreateTestSlice;

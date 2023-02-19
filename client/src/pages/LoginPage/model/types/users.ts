@@ -4,6 +4,8 @@ export interface UserForLogin {
     middlename: string;
     lastname: string;
     role: string;
+    solvedTasksAmount: number;
+    correctlySolved: number;
 }
 
 export interface UserForLoginSchema {

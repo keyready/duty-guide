@@ -5,6 +5,7 @@ import { TestingPage } from 'pages/TestingPage';
 import { NotFound } from 'pages/NotFound';
 import { TheoryPage } from 'pages/TheoryPage';
 import { AdminPage } from 'pages/AdminPage';
+import { ProfilePage } from 'pages/ProfilePage';
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
@@ -17,6 +18,7 @@ export enum AppRoutes {
     TESTING = 'testing',
     THEORY = 'theory',
     ADMIN = 'admin',
+    PROFILE = 'profile',
 
     // last
     NOT_FOUND = 'not_found'
@@ -28,6 +30,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.TESTING]: '/testing',
     [AppRoutes.THEORY]: '/theory',
     [AppRoutes.ADMIN]: '/adminka',
+    [AppRoutes.PROFILE]: '/profile/',
 
     // last
     [AppRoutes.NOT_FOUND]: '*',
@@ -57,6 +60,11 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
         element: <AdminPage />,
         authOnly: true,
         adminOnly: true,
+    },
+    [AppRoutes.PROFILE]: {
+        path: `${RoutePath.profile}:id`,
+        element: <ProfilePage />,
+        authOnly: true,
     },
 
     // last

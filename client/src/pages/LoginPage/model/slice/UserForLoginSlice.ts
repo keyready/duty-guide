@@ -3,6 +3,7 @@ import { UserForLogin, UserForLoginSchema } from 'pages/LoginPage/model/types/us
 import { fetchUsersForLogin } from 'pages/LoginPage/model/services/fetchUsersForLogin';
 import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 import { act } from 'react-dom/test-utils';
+import { refreshUserData } from 'pages/LoginPage/model/services/refreshUserData';
 
 const initialState: UserForLoginSchema = {
     allUsers: undefined,
@@ -39,6 +40,20 @@ export const UserForLoginSlice = createSlice({
             state.allUsers = action.payload;
         })
         .addCase(fetchUsersForLogin.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = String(action.error);
+        })
+
+        .addCase(refreshUserData.pending, (state) => {
+            state.isLoading = true;
+            state.error = undefined;
+        })
+        .addCase(refreshUserData.fulfilled, (state, action: PayloadAction<UserForLogin>) => {
+            state.isLoading = false;
+            state.error = undefined;
+            state.selectedUser = action.payload;
+        })
+        .addCase(refreshUserData.rejected, (state, action) => {
             state.isLoading = false;
             state.error = String(action.error);
         }),

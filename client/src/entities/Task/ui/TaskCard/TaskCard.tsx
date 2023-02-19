@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { HRadio, HRadioType } from 'shared/UI/RadioGroup/RadioGroup';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
 import { classNames } from 'shared/lib/classNames/classNames';
-import { Task } from '../../model/types/Task';
+import { updateStatistics } from 'pages/TestingPage/model/service/updateStatistics';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
 import classes from './TaskCard.module.scss';
+import { Task } from '../../model/types/Task';
 
 interface TaskCardProps {
     task: Task;
@@ -23,6 +26,9 @@ export const TaskCard = (props: TaskCardProps) => {
         isEnd,
         totalQuestions,
     } = props;
+
+    const dispatch = useDispatch();
+    const user = useSelector(getAuthUser);
 
     const [answersVariants, setAnswersVariant] = useState<string[]>([]);
 
@@ -53,6 +59,13 @@ export const TaskCard = (props: TaskCardProps) => {
 
     if (isEnd) {
         const result = answers / totalQuestions * 100;
+        if (user?.id) {
+            dispatch(updateStatistics({
+                id: user.id,
+                newSolves: totalQuestions,
+                newRightSolves: answers,
+            }));
+        }
 
         return (
             <div className={classes.TaskCard}>

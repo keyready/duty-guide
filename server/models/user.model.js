@@ -22,6 +22,16 @@ module.exports = DB.define('users', {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'user'
+    },
+    solvedTasksAmount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    correctlySolved: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 }, {
     tableName: 'users',

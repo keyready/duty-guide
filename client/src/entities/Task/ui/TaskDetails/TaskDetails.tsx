@@ -1,18 +1,8 @@
 import { classNames } from 'shared/lib/classNames/classNames';
-import {
-    memo, useCallback, useEffect, useState,
-} from 'react';
-import { Loader } from 'shared/UI/Loader/Loader';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo, useCallback, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
-import { fetchTasks } from '../../model/services/fetchTasks/fetchTasks';
 import { TaskCard } from '../TaskCard/TaskCard';
 import classes from './TaskDetails.module.scss';
-import {
-    getTasksData,
-    getTasksError,
-    getTasksIsLoading,
-} from '../../model/selectors/TaskSelector';
 import { Task } from '../../model/types/Task';
 
 interface TaskDetailsProps {

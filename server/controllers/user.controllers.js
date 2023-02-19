@@ -53,6 +53,46 @@ class UserControllers {
         }
     }
 
+    async refreshUserData(req, res) {
+        try {
+            const {id} = req.body
+
+            const user = await UserModel.findByPk(id, {raw: true})
+
+            return res.status(200).json(user)
+        } catch (e) {
+            console.log(e.message);
+            return res.status(500).json(e.message)
+        }
+    }
+
+    async changeStatistics(req, res) {
+        try {
+            const {id, newSolves, newRightSolves} = req.body;
+
+            console.log(req.body)
+
+            const user = await UserModel.findByPk(id, {raw: true})
+            const solvesFromBd = user.solvedTasksAmount;
+            const correctlySolvedFromBd = user.correctlySolved;
+
+            await UserModel.update(
+                {
+                    correctlySolved: correctlySolvedFromBd + newRightSolves,
+                    solvedTasksAmount: solvesFromBd + newSolves
+                },
+                {
+                    where: {id}
+                }
+            )
+
+            res.status(200).json({message: 'Статистика обновлена'})
+        } catch (e) {
+            console.log(e.message);
+            return res.status(500).json(e.message)
+        }
+    }
+
     async createTest(req, res) {
         try {
             const {tasksAmount, categories} = req.body
@@ -60,7 +100,7 @@ class UserControllers {
             if (!categories.length) {
                 const tasks = await TaskModel.findAll({raw: true})
                 const tasksAmountInStore = await TaskModel.count();
-                const randIds = await generateTest(0,  tasksAmountInStore- 1, tasksAmount)
+                const randIds = await generateTest(0, tasksAmountInStore - 1, tasksAmount)
 
                 let test = [];
                 randIds.forEach(testItem => test.push(tasks[testItem]))

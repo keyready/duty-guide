@@ -8,12 +8,20 @@ import { fetchTasksAmount, getTasksAmount, TaskDetails } from 'entities/Task';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTasksAmountIsLoading } from 'entities/Task/model/selectors/TaskSelector';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
-import { fetchCategories, getCategoriesData, getCategoriesIsLoading } from 'features/fetchCategories';
-import { HRadio, HRadioType } from 'shared/UI/RadioGroup/RadioGroup';
-import { HSelect, HSelectItems } from 'shared/UI/HSelect/HSelect';
+import {
+    fetchCategories,
+    getCategoriesData,
+    getCategoriesIsLoading,
+} from 'features/fetchCategories';
+import { HSelect } from 'shared/UI/HSelect/HSelect';
 import { createTest } from 'pages/TestingPage/model/service/createTest';
-import { getTest, getTestError, getTestIsLoading } from 'pages/TestingPage/model/selectors/testSelector';
-import { Alert, Collapse } from 'react-bootstrap';
+import { Collapse } from 'react-bootstrap';
+import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
+import {
+    getTest,
+    getTestError,
+    getTestIsLoading,
+} from '../../model/selectors/testSelector';
 import classes from './TestingPage.module.scss';
 
 interface TestingPageProps {
@@ -31,6 +39,7 @@ const TestingPage = memo((props: TestingPageProps) => {
     const tasksAmount = useSelector(getTasksAmount);
     const tasksAmountIsLoading = useSelector(getTasksAmountIsLoading);
     const test = useSelector(getTest);
+    const user = useSelector(getAuthUser);
     const isLoading = useSelector(getTestIsLoading);
     const testError = useSelector(getTestError);
 
@@ -55,6 +64,7 @@ const TestingPage = memo((props: TestingPageProps) => {
     const restartTest = useCallback(() => {
         setStartTest(false);
         setEndOfTest(false);
+
         document.location.reload();
     }, []);
 
@@ -93,8 +103,6 @@ const TestingPage = memo((props: TestingPageProps) => {
             categories: filteredIds,
         }));
 
-        console.log('тут', test?.test);
-
         // @ts-ignore
         if (dispatchResult.payload === 'error') {
             setNotEnoughtQuestions(true);
@@ -104,7 +112,7 @@ const TestingPage = memo((props: TestingPageProps) => {
         } else {
             setStartTest(true);
         }
-    }, [dispatch, filteredIds, pickedQuestions, test]);
+    }, [dispatch, filteredIds, pickedQuestions]);
 
     return (
         <div className={classNames('', {}, [className])}>

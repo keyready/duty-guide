@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserActions } from 'entities/User';
 import { AppLink } from 'shared/UI/AppLink/AppLink';
 import { getAuthUser } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
+import { RoutePath, routerConfig } from 'shared/config/routeConfig/routeConfig';
 import classes from './Navbar.module.scss';
 
 interface NavbarProps {
@@ -29,12 +30,13 @@ export const Navbar = memo((props: NavbarProps) => {
     if (authData) {
         return (
             <div className={classNames(classes.Navbar, {}, [className])}>
-                <div>
-                    <AppLink className={classes.main_link} to="/">Главная</AppLink>
-                    <AppLink className={classes.main_link} to="/theory">Теория</AppLink>
-                    <AppLink to="/testing">Тестирование</AppLink>
+                <div className={classes.links}>
+                    <AppLink to={RoutePath.main}>Главная</AppLink>
+                    <AppLink to={RoutePath.theory}>Теория</AppLink>
+                    <AppLink to={RoutePath.testing}>Тестирование</AppLink>
+                    <AppLink to={RoutePath.profile + authData.id}>Профиль</AppLink>
                     {authData.role === 'admin'
-                        ? (<AppLink className={classes.admin_link} to="/adminka">Админка</AppLink>)
+                        ? (<AppLink to={RoutePath.admin}>Админка</AppLink>)
                         : ''}
                 </div>
                 <Button

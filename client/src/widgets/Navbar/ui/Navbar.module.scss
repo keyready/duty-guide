@@ -11,10 +11,9 @@
     flex-grow: 1;
 }
 
-.main_link {
-    margin-right: 12px;
-}
-
-.admin_link {
-    margin-left: 12px;
+.links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px
 }
