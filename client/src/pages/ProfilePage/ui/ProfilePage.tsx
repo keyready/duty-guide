@@ -32,7 +32,7 @@ const ProfilePage = memo((props: ProfilePageProps) => {
     const { id } = useParams();
 
     useEffect(() => {
-        if (id) dispatch(refreshUserData(Number(id)));
+        if (user?.id) dispatch(refreshUserData(user.id));
 
         if (user?.correctlySolved && user?.solvedTasksAmount) {
             setCorrectlySolved(user.correctlySolved / user.solvedTasksAmount * 100);
@@ -42,7 +42,7 @@ const ProfilePage = memo((props: ProfilePageProps) => {
         else if (correctlySolved > 65 && correctlySolved <= 80) {
             setCorrectlySolvedColors({ bg: 'warning', color: 'white' });
         } else setCorrectlySolvedColors({ bg: 'success', color: 'white' });
-    }, [correctlySolved, user?.correctlySolved, user?.solvedTasksAmount]);
+    }, [correctlySolved, dispatch, user?.correctlySolved, user?.id, user?.solvedTasksAmount]);
 
     return (
         <ContentWrapper
