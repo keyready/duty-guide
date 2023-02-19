@@ -69,8 +69,8 @@ class AdminService {
         })
 
         //TODO ---Путь до диры со статикой в dev.---
-        const uploadedFilesPath = '../client/public/files';
-        // const uploadedFilesPath = '../dist/public/files';
+        // const uploadedFilesPath = '../client/public/files';
+        const uploadedFilesPath = '../dist/public/files';
 
         fs.mkdir(`${uploadedFilesPath}/${title}`, (err) => {
             if (err) {

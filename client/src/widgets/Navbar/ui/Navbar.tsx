@@ -35,6 +35,7 @@ export const Navbar = memo((props: NavbarProps) => {
                     <AppLink to={RoutePath.theory}>Теория</AppLink>
                     <AppLink to={RoutePath.testing}>Тестирование</AppLink>
                     <AppLink to={RoutePath.profile + authData.id}>Профиль</AppLink>
+                    <AppLink to={RoutePath.leaderboard}>Таблица лидеров</AppLink>
                     {authData.role === 'admin'
                         ? (<AppLink to={RoutePath.admin}>Админка</AppLink>)
                         : ''}

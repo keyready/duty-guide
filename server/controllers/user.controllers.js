@@ -25,9 +25,9 @@ class UserControllers {
 
     async startApp(req, res) {
         try {
-            console.log('запрос:', req.body)
+            const {lastname, order} = req.body
 
-            const users = await UserService.startApp(req.body.lastname)
+            const users = await UserService.startApp(lastname, order)
             return res.status(200).json(users)
         } catch (e) {
             console.log(e.message);

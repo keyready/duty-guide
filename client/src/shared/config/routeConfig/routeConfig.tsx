@@ -6,6 +6,7 @@ import { NotFound } from 'pages/NotFound';
 import { TheoryPage } from 'pages/TheoryPage';
 import { AdminPage } from 'pages/AdminPage';
 import { ProfilePage } from 'pages/ProfilePage';
+import { LeaderboardPage } from 'pages/LeaderboardPage';
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
@@ -19,6 +20,7 @@ export enum AppRoutes {
     THEORY = 'theory',
     ADMIN = 'admin',
     PROFILE = 'profile',
+    LEADERBOARD = 'leaderboard',
 
     // last
     NOT_FOUND = 'not_found'
@@ -31,6 +33,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.THEORY]: '/theory',
     [AppRoutes.ADMIN]: '/adminka',
     [AppRoutes.PROFILE]: '/profile/',
+    [AppRoutes.LEADERBOARD]: '/leader_board',
 
     // last
     [AppRoutes.NOT_FOUND]: '*',
@@ -64,6 +67,11 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.PROFILE]: {
         path: `${RoutePath.profile}:id`,
         element: <ProfilePage />,
+        authOnly: true,
+    },
+    [AppRoutes.LEADERBOARD]: {
+        path: RoutePath.leaderboard,
+        element: <LeaderboardPage />,
         authOnly: true,
     },
 

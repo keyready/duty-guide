@@ -3,19 +3,28 @@ import { ThunkConfig } from 'app/providers/StoreProvider/config/StateSchema';
 import { UserForLogin } from 'pages/LoginPage/model/types/users';
 import { UserForLoginActions } from 'pages/LoginPage/model/slice/UserForLoginSlice';
 
+interface Order {
+    sortBy: string,
+    order: 'ASC' | 'DESC'
+}
+export interface props {
+    lastname: string,
+    order: Order;
+}
+
 export const fetchUsersForLogin = createAsyncThunk<
     UserForLogin[],
-    string,
+    props,
     ThunkConfig<string>
 >(
     'task/fetchTaskData',
-    async (searching, thunkAPI) => {
+    async (params, thunkAPI) => {
         const { dispatch, extra, rejectWithValue } = thunkAPI;
 
         try {
             const response = await extra.api.post<UserForLogin[]>(
                 '/loginUsers',
-                { lastname: searching },
+                params,
             );
 
             if (!response.data) {

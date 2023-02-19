@@ -34,12 +34,24 @@ const LoginPage = memo((props: LoginPageProps) => {
     const [queryString, setQueryString] = useState<string>('');
 
     useEffect(() => {
-        dispatch(fetchUsersForLogin(''));
+        dispatch(fetchUsersForLogin({
+            lastname: '',
+            order: {
+                order: 'ASC',
+                sortBy: 'lastname',
+            },
+        }));
         document.title = 'Авторизация';
     }, [dispatch]);
 
     const fetchData = useCallback((value: string) => {
-        dispatch(fetchUsersForLogin(value));
+        dispatch(fetchUsersForLogin({
+            lastname: value,
+            order: {
+                order: 'ASC',
+                sortBy: 'lastname',
+            },
+        }));
     }, [dispatch]);
     const debouncedFetchData = useDebounce(fetchData, 700);
 

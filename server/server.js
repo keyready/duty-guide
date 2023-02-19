@@ -9,8 +9,8 @@ const app = express();
 
 app.use(cors())
 // TODO путь до статики
-app.use(express.static(path.resolve('../client/public/')))
-// app.use(express.static(path.resolve('../dist/')))
+// app.use(express.static(path.resolve('../client/public/')))
+app.use(express.static(path.resolve('../dist/')))
 app.use(express.json())
 app.use(fileupload({}))
 app.use(session({
@@ -34,8 +34,8 @@ const StartApp = async () => {
         // await DB.sync({force: true})
         await app.get('/*', (req, res) => {
             // TODO путь до index.html
-            return res.sendFile(path.resolve('../client/public/index.html'))
-            // return res.sendFile(path.resolve('../dist/index.html'))
+            // return res.sendFile(path.resolve('../client/public/index.html'))
+            return res.sendFile(path.resolve('../dist/index.html'))
         })
         await app.listen(5000, () => {
             console.log('Server started on http://localhost:5000')
