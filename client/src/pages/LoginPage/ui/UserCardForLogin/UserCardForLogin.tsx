@@ -1,5 +1,6 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import {
+    FormEvent,
     memo, useCallback, useEffect, useState,
 } from 'react';
 import { Button, ButtonTheme } from 'shared/UI/Button/Button';
@@ -31,7 +32,9 @@ export const UserCardForLogin = memo((props: UserCardForLoginProps) => {
 
     const handleClose = () => setShow(false);
 
-    const onUserSelect = useCallback(async (id: number) => {
+    const onAdminLogin = useCallback(async (e: FormEvent<HTMLFormElement>, id: number) => {
+        e.preventDefault();
+
         const response = await dispatch(userLoginByLastname({ id, password }));
 
         // @ts-ignore
@@ -42,6 +45,17 @@ export const UserCardForLogin = memo((props: UserCardForLoginProps) => {
         }
 
         setPassword('');
+    }, [dispatch, navigate, password]);
+
+    const onUserSelect = useCallback(async (id: number) => {
+        const response = await dispatch(userLoginByLastname({ id, password }));
+
+        // @ts-ignore
+        if (response.payload === 'Произошла ошибка, скорее всего неверный пароль для админа') {
+            setShow(true);
+        } else {
+            navigate('/testing');
+        }
     }, [dispatch, navigate, password]);
 
     return (
@@ -65,15 +79,20 @@ export const UserCardForLogin = memo((props: UserCardForLoginProps) => {
                 {user.role === 'admin' && <Badge bg="danger">ADMIN</Badge>}
             </div>
             {user.role === 'admin' && (
-                <Input
-                    size={InputSize.SMALL}
-                    onChange={setPassword}
-                    value={password}
-                    placeholder="Пароль"
-                />
+                <form
+                    onSubmit={(e) => onAdminLogin(e, user.id)}
+                >
+                    <Input
+                        size={InputSize.SMALL}
+                        onChange={setPassword}
+                        value={password}
+                        placeholder="Пароль"
+                    />
+                </form>
             )}
             <Button
                 disabled={!password && user.role === 'admin'}
+                type="submit"
                 onClick={() => onUserSelect(user.id)}
                 theme={ButtonTheme.BLUE}
             >

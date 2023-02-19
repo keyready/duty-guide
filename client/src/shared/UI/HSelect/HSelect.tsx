@@ -5,7 +5,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { Loader } from 'shared/UI/Loader/Loader';
 import classes from './HSelect.module.scss';
 
-interface HSelectItems {
+export interface HSelectItems {
     value: string;
     content: ReactNode;
 }
@@ -17,6 +17,7 @@ interface HSelectProps {
     optionsClassname?: string,
     placeholder?: string;
     isLoading?: boolean;
+    multiply?: boolean;
 }
 
 export const HSelect = (props: HSelectProps) => {
@@ -27,6 +28,7 @@ export const HSelect = (props: HSelectProps) => {
         selectedItems,
         placeholder,
         isLoading,
+        multiply = true,
     } = props;
 
     return (
@@ -35,7 +37,7 @@ export const HSelect = (props: HSelectProps) => {
             className={classes.HSelect}
             value={selectedItems}
             onChange={(value) => onChange(value)}
-            multiple
+            multiple={multiply}
         >
             <Listbox.Button className={classes.trigger}>
                 <Button

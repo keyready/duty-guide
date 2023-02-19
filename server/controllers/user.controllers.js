@@ -1,5 +1,25 @@
 const UserService = require('../services/user.service');
-const {UserModel, TaskModel} = require("../models");
+const {UserModel, TaskModel, CategoryTaskModel} = require("../models");
+const {Op} = require("sequelize");
+const {all} = require("express/lib/application");
+const {log} = require("util");
+
+const randomInt = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
+const generateTest = (n1, n2, len) => {
+    if (n1 === n2 && len === 1) return [n1];
+    if (!len) return []
+    let min = n1 < n2 ? n1 : n2;
+    let max = n1 > n2 ? n1 : n2;
+    let o = [];
+    for (let i = 0; i < len;) {
+        let n = randomInt(min, max)
+        if (!o.includes(n)) {
+            o[i] = n;
+            i++
+        }
+    }
+    return o;
+}
 
 class UserControllers {
 
@@ -27,6 +47,78 @@ class UserControllers {
                 }
                 return res.cookie('session', req.session.id).status(200).json(selectedUser)
             });
+        } catch (e) {
+            console.log(e.message);
+            return res.status(500).json(e.message)
+        }
+    }
+
+    async createTest(req, res) {
+        try {
+            const {tasksAmount, categories} = req.body
+
+            if (!categories.length) {
+                const tasks = await TaskModel.findAll({raw: true})
+                const tasksAmountInStore = await TaskModel.count();
+                const randIds = await generateTest(0,  tasksAmountInStore- 1, tasksAmount)
+
+                let test = [];
+                randIds.forEach(testItem => test.push(tasks[testItem]))
+
+                return res.status(200).json(test)
+            }
+
+            let filteredTasksByCategory = []
+            for (let i = 0; i < categories.length; i++) {
+                filteredTasksByCategory.push(
+                    await CategoryTaskModel.findAll({
+                        raw: true,
+                        where: {
+                            categoryId: categories[i]
+                        }
+                    })
+                )
+            }
+
+
+            let tasksIds = []
+            filteredTasksByCategory.forEach(item => {
+                for (let i = 0; i < item.length; i++) {
+                    tasksIds.push(
+                        item[i].taskId
+                    )
+                }
+            })
+
+            const result = tasksIds.reduce((acc, item) => {
+                if (acc.includes(item)) {
+                    return acc;
+                }
+                return [...acc, item];
+            }, []);
+
+            let tasks = [];
+            for (let i = 0; i < result.length; i++) {
+                tasks.push(
+                    await TaskModel.findByPk(result[i], {raw: true})
+                )
+            }
+
+            if (tasks.length < tasksAmount) {
+                return res.status(404).json(
+                    {
+                        message:
+                            'Недостаточно вопросов в базе данных по выбранной категории, попробуйте изменить запрос поиска'
+                    }
+                )
+            }
+
+            const testIds = generateTest(0, tasks.length - 1, tasksAmount)
+
+            let test = []
+            testIds.forEach(testItem => test.push(tasks[testItem]))
+
+            return res.status(200).json(test)
         } catch (e) {
             console.log(e.message);
             return res.status(500).json(e.message)

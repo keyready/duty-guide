@@ -4,6 +4,7 @@ import {
 } from 'react';
 import { Loader } from 'shared/UI/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
+import { ProgressBar } from 'react-bootstrap';
 import { fetchTasks } from '../../model/services/fetchTasks/fetchTasks';
 import { TaskCard } from '../TaskCard/TaskCard';
 import classes from './TaskDetails.module.scss';
@@ -21,6 +22,7 @@ interface TaskDetailsProps {
     endOfTest: boolean;
     setEndOfTest: (value: boolean) => void;
     totalQuestions: number;
+    test: Task[];
 }
 
 export const TaskDetails = memo((props: TaskDetailsProps) => {
@@ -31,56 +33,44 @@ export const TaskDetails = memo((props: TaskDetailsProps) => {
         endOfTest,
         setEndOfTest,
         totalQuestions,
+        test,
     } = props;
 
-    const tasks = useSelector(getTasksData);
-    const isLoading = useSelector(getTasksIsLoading);
-    const error = useSelector(getTasksError);
-    const dispatch = useDispatch();
-
-    const [task, setTask] = useState<Task>(tasks[0]);
-    const [existedTasks, setExistedTasks] = useState<number[]>([]);
+    const [task, setTask] = useState<Task>(test[0]);
     const [
         currentTask,
         setCurrentTask,
     ] = useState<number>(1);
 
-    useEffect(() => {
-        dispatch(fetchTasks());
-    }, [dispatch]);
-
     const renderAnswer = useCallback(() => {
-        if (currentTask >= totalQuestions) {
-            setEndOfTest(true);
-        }
-
-        let randInd = Math.floor(Math.random() * tasks.length);
-        while (existedTasks.includes(randInd)) {
-            randInd = Math.floor(Math.random() * tasks.length);
-        }
-        setExistedTasks([...existedTasks, randInd]);
         setCurrentTask(currentTask + 1);
-        setTask(tasks[randInd]);
-    }, [currentTask, existedTasks, setEndOfTest, tasks, totalQuestions]);
 
-    if (isLoading) {
-        return (
-            <div className={classNames(classes.TaskDetails, {}, [className])}>
-                <Loader />
-            </div>
-        );
-    }
+        if (currentTask === totalQuestions) {
+            setEndOfTest(true);
+            return;
+        }
+
+        setTask(test[currentTask]);
+    }, [currentTask, setEndOfTest, test, totalQuestions]);
 
     return (
         <div className={classNames(classes.TaskDetails, {}, [className])}>
             {!endOfTest && (
-                <h3>{`Вопрос ${currentTask} из ${totalQuestions}`}</h3>
+                <div>
+                    <h3>{`Вопрос ${currentTask} из ${totalQuestions}`}</h3>
+                    <ProgressBar
+                        variant="success"
+                        animated
+                        label={`${(currentTask / totalQuestions * 100).toFixed(2)}%`}
+                        now={(currentTask / totalQuestions * 100)}
+                    />
+                </div>
             )}
-            {tasks.length
+            {test.length
                 ? (
                     <TaskCard
                         totalQuestions={totalQuestions}
-                        task={task || tasks[0]}
+                        task={task}
                         onNextButtonClick={renderAnswer}
                         answers={answers}
                         setAnswers={setAnswers}

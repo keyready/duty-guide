@@ -63,7 +63,7 @@ export const TaskCard = (props: TaskCardProps) => {
                     [classes.perfect]: result >= 70,
                 })}
                 >
-                    {`Ваш результат: ${answers} (${result}%)`}
+                    {`Ваш результат: ${answers} (${result.toFixed(2)}%)`}
                 </h3>
                 <h3>{result <= 50 ? 'К заступлению в наряд не готов.' : ''}</h3>
                 <h3>{result > 50 && result <= 70 ? 'Возможны замечания на разводе.' : ''}</h3>

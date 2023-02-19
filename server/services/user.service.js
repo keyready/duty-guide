@@ -99,7 +99,6 @@ class UserService {
                 }
             })
         })
-        console.log(tasks)
 
         return tasks
     }

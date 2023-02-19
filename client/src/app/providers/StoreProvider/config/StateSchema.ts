@@ -7,6 +7,7 @@ import { TaskSchema } from 'entities/Task/';
 import { TheorySchema } from 'entities/Theory';
 import { CategoriesSchema } from 'features/fetchCategories';
 import { UserForLoginSchema } from 'pages/LoginPage/model/types/users';
+import { TestSchema } from 'pages/TestingPage';
 
 export interface StateSchema {
     counter: CounterSchema;
@@ -16,6 +17,7 @@ export interface StateSchema {
     Theory: TheorySchema
     UserForLogin: UserForLoginSchema;
     categories: CategoriesSchema;
+    Test: TestSchema
 }
 
 export interface ThunkExtraArg {

@@ -7,7 +7,8 @@ import { $api } from 'shared/api/api';
 import { TaskReducer } from 'entities/Task';
 import { TheoryReducer } from 'entities/Theory';
 import { fetchCategoriesReducer } from 'features/fetchCategories';
-import { UserForLoginReducer } from 'pages/LoginPage/model/slice/UserForLoginSlice';
+import { UserForLoginReducer } from 'pages/LoginPage';
+import { CreateTestReducer } from 'pages/TestingPage';
 import { StateSchema } from './StateSchema';
 
 export function createReduxStore(
@@ -22,6 +23,7 @@ export function createReduxStore(
         Theory: TheoryReducer,
         categories: fetchCategoriesReducer,
         UserForLogin: UserForLoginReducer,
+        Test: CreateTestReducer,
     };
 
     return configureStore({
