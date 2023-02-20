@@ -1,12 +1,14 @@
-import { classNames } from 'shared/lib/classNames/classNames';
 import { memo, useEffect } from 'react';
 import { ContentWrapper } from 'widgets/ContentWrapper/ContentWrapper';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsersForLogin } from 'pages/LoginPage';
-import { getAllUsers, getAllUsersIsLoading } from 'pages/LoginPage/model/selectors/usersForLoginSelector';
 import { Card, Table } from 'react-bootstrap';
-import { Loader } from 'shared/UI/Loader/Loader';
+import {
+    getAllUsers,
+    getAllUsersIsLoading,
+} from '../../LoginPage/model/selectors/usersForLoginSelector';
 import classes from './LeaderboardPage.module.scss';
+import SortArrows from '../assets/sortBy.svg';
 
 interface LeaderboardPageProps {
     className?: string;
@@ -31,6 +33,34 @@ const LeaderboardPage = memo((props: LeaderboardPageProps) => {
         }));
     }, [dispatch]);
 
+    const sortBySolved = () => {
+        dispatch(fetchUsersForLogin({
+            lastname: '',
+            order: {
+                order: 'DESC',
+                sortBy: 'solvedTasksAmount',
+            },
+        }));
+    };
+    const sortByCorrectlySolved = () => {
+        dispatch(fetchUsersForLogin({
+            lastname: '',
+            order: {
+                order: 'DESC',
+                sortBy: 'correctlySolved',
+            },
+        }));
+    };
+    const sortBySurname = () => {
+        dispatch(fetchUsersForLogin({
+            lastname: '',
+            order: {
+                order: 'ASC',
+                sortBy: 'lastname',
+            },
+        }));
+    };
+
     return (
         <ContentWrapper
             title="Таблица лидеров"
@@ -49,20 +79,26 @@ const LeaderboardPage = memo((props: LeaderboardPageProps) => {
                     className={classes.cell}
                     text="white"
                     bg="secondary"
+                    style={{ cursor: 'pointer' }}
+                    onClick={sortBySurname}
                 >
                     ФИО
                 </Card>
                 <Card
                     className={classes.cell}
+                    style={{ cursor: 'pointer' }}
                     text="white"
                     bg="secondary"
+                    onClick={sortBySolved}
                 >
                     Общее количество задач
                 </Card>
                 <Card
                     className={classes.cell}
+                    style={{ cursor: 'pointer' }}
                     text="white"
                     bg="secondary"
+                    onClick={sortByCorrectlySolved}
                 >
                     Количество верно решенных задач
                 </Card>

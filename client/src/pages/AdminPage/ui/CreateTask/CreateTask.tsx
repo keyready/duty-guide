@@ -20,10 +20,10 @@ interface CreateTaskProps {
 }
 
 interface Questions {
-    question_1?: string;
-    question_2?: string;
-    question_3?: string;
-    question_4?: string;
+    question_1: string;
+    question_2: string;
+    question_3: string;
+    question_4: string;
 }
 
 export const CreateTask = memo((props: CreateTaskProps) => {
@@ -36,7 +36,12 @@ export const CreateTask = memo((props: CreateTaskProps) => {
 
     const [taskTitle, setTaskTitle] = useState<string>('');
     const [taskDescription, setTaskDescription] = useState<string>('');
-    const [questions, setQuestions] = useState<Questions>({});
+    const [questions, setQuestions] = useState<Questions>({
+        question_1: '',
+        question_2: '',
+        question_3: '',
+        question_4: '',
+    });
     const [rightAnswer, setRightAnswer] = useState<string>('');
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const [filteredIds, setFilteredIds] = useState<number[]>([]);
@@ -86,6 +91,14 @@ export const CreateTask = memo((props: CreateTaskProps) => {
             rightAnswer,
         };
 
+        setTaskTitle('');
+        setQuestions({
+            question_1: '',
+            question_2: '',
+            question_3: '',
+            question_4: '',
+        });
+
         dispatch(createTask(newTask));
     }, [dispatch, filteredIds, questions, rightAnswer, taskDescription, taskTitle]);
 
@@ -109,32 +122,28 @@ export const CreateTask = memo((props: CreateTaskProps) => {
                 />
 
                 <div className={classes.answersWrapper}>
-                    <Input
-                        size={InputSize.SMALL}
+                    <TextArea
                         onChange={(
                             value: string,
                         ) => setQuestions({ ...questions, question_1: value })}
                         value={questions.question_1}
                         placeholder="Вариант ответа 1"
                     />
-                    <Input
-                        size={InputSize.SMALL}
+                    <TextArea
                         onChange={(
                             value: string,
                         ) => setQuestions({ ...questions, question_2: value })}
                         value={questions.question_2}
                         placeholder="Вариант ответа 2"
                     />
-                    <Input
-                        size={InputSize.SMALL}
+                    <TextArea
                         onChange={(
                             value: string,
                         ) => setQuestions({ ...questions, question_3: value })}
                         value={questions.question_3}
                         placeholder="Вариант ответа 3"
                     />
-                    <Input
-                        size={InputSize.SMALL}
+                    <TextArea
                         onChange={(
                             value: string,
                         ) => setQuestions({ ...questions, question_4: value })}
@@ -143,8 +152,7 @@ export const CreateTask = memo((props: CreateTaskProps) => {
                     />
                 </div>
 
-                <Input
-                    size={InputSize.SMALL}
+                <TextArea
                     onChange={setRightAnswer}
                     value={rightAnswer}
                     placeholder="Правильный вариант"

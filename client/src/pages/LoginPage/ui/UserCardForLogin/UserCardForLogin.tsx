@@ -83,9 +83,11 @@ export const UserCardForLogin = memo((props: UserCardForLoginProps) => {
                     onSubmit={(e) => onAdminLogin(e, user.id)}
                 >
                     <Input
+                        className={classes.input}
                         size={InputSize.SMALL}
                         onChange={setPassword}
                         value={password}
+                        type="password"
                         placeholder="Пароль"
                     />
                 </form>
