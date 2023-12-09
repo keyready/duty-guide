@@ -30,6 +30,8 @@ services:
     container_name: db
     image: postgres:13-alpine
     restart: always
+    volumes:
+      - ./duty-bcup-21-02-23.sql:/backup/db.sql
     ports:
       - 5432:5432
     environment:
